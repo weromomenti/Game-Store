@@ -1,8 +1,12 @@
+using Data_Layer.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<GameStoreDbContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=GameStore;Trusted_Connection=True;"));
 
 var app = builder.Build();
 
@@ -16,7 +20,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 
 app.MapControllerRoute(
     name: "default",
