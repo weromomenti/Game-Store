@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,44 +18,45 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(Genre entity)
+        public async Task AddAsync(Genre entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.AddAsync(entity);
         }
 
-        public void DeleteAsync(Genre entity)
+        public void Delete(Genre entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Genres.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var genre = await gameStoreDbContext.Genres.FindAsync(id);
+            gameStoreDbContext.Genres.Remove(genre);
         }
 
-        public Task<IEnumerable<Genre>> GetAllAsync()
+        public async Task<IEnumerable<Genre>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Genres.ToListAsync();
         }
 
-        public Task<IEnumerable<Genre>> GetAllWithDetailsAsync()
+        public async Task<IEnumerable<Genre>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Genres.Include(g => g.Games).ToListAsync();
         }
 
-        public Task<Genre> GetByIdAsync(int id)
+        public async Task<Genre> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Genres.FindAsync(id);
         }
 
-        public Task<Genre> GetByIdWithDetailsAsync()
+        public async Task<Genre> GetByIdWithDetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Genres.Include(g => g.Games).FirstAsync(g => g.Id == id);
         }
 
         public void Update(Genre entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Genres.Update(entity);
         }
     }
 }

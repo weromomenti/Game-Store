@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,49 +18,50 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(User entity)
+        public async Task AddAsync(User entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.Users.AddAsync(entity);
         }
 
-        public void DeleteAsync(User entity)
+        public void Delete(User entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Users.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await gameStoreDbContext.Users.FindAsync(id);
+            gameStoreDbContext.Users.Remove(user);
         }
 
-        public Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Users.ToListAsync();
         }
 
-        public Task<IEnumerable<User>> GetAllWithDetailsAync()
+        public async Task<IEnumerable<User>> GetAllWithDetailsAync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Users.Include(u => u.Cart).Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).ToListAsync();
         }
 
-        public Task<User> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Users.FindAsync(id);
         }
 
-        public Task<User> GetByIdWithDetailsAsync(int id)
+        public async Task<User> GetByIdWithDetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Users.Include(u => u.Cart).Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).FirstAsync(u => u.Id == id);
         }
 
-        public Task<IEnumerable<User>> GetByRoleIdAsync(int roleId)
+        public async Task<IEnumerable<User>> GetByRoleIdAsync(int roleId)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Users.Where(u => u.RoleId == roleId).ToListAsync();
         }
 
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Update(entity);
         }
     }
 }

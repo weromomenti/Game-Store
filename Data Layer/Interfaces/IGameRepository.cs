@@ -10,6 +10,6 @@ namespace Data_Layer.Interfaces
     public interface IGameRepository : IRepository<Game>
     {
         Task<IEnumerable<Game>> GetAllWithDetailsAsync();
-        Task<Game> GetByIdWithDetailsAsync();
+        Task<Game> GetByIdWithDetailsAsync(int id);
     }
 }

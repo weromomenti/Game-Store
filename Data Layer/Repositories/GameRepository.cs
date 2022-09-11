@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,44 +18,45 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(Game entity)
+        public async Task AddAsync(Game entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.Games.AddAsync(entity);
         }
 
-        public void DeleteAsync(Game entity)
+        public void Delete(Game entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Games.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var game = await gameStoreDbContext.Games.FindAsync(id);
+            gameStoreDbContext.Games.Remove(game);
         }
 
-        public Task<IEnumerable<Game>> GetAllAsync()
+        public async Task<IEnumerable<Game>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Games.ToListAsync();
         }
 
-        public Task<IEnumerable<Game>> GetAllWithDetailsAsync()
+        public async Task<IEnumerable<Game>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Games.Include(g => g.Genres).Include(g => g.Comments).Include(g => g.PEGIRating).ToListAsync();
         }
 
-        public Task<Game> GetByIdAsync(int id)
+        public async Task<Game> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Games.FindAsync(id);
         }
 
-        public Task<Game> GetByIdWithDetailsAsync()
+        public async Task<Game> GetByIdWithDetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Games.Include(g => g.Genres).Include(g => g.Comments).Include(g => g.PEGIRating).FirstAsync(g => g.Id == id);
         }
 
         public void Update(Game entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Games.Update(entity);
         }
     }
 }

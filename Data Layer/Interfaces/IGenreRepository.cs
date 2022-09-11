@@ -10,6 +10,6 @@ namespace Data_Layer.Interfaces
     public interface IGenreRepository : IRepository<Genre>
     {
         Task<IEnumerable<Genre>> GetAllWithDetailsAsync();
-        Task<Genre> GetByIdWithDetailsAsync();
+        Task<Genre> GetByIdWithDetailsAsync(int id);
     }
 }

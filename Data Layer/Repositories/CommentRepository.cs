@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,54 +18,55 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(Comment entity)
+        public async Task AddAsync(Comment entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.Comments.AddAsync(entity);
         }
 
-        public void DeleteAsync(Comment entity)
+        public async void Delete(Comment entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Comments.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var comment = await gameStoreDbContext.Comments.FindAsync(id);
+            gameStoreDbContext.Comments.Remove(comment);
         }
 
-        public Task<IEnumerable<Comment>> GetAllAsync()
+        public async Task<IEnumerable<Comment>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Comments.ToListAsync();
         }
 
-        public Task<IEnumerable<Comment>> GetAllWithDetailsAsync()
+        public async Task<IEnumerable<Comment>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Comments.Include(c => c.Game).Include(c => c.User).Include(c => c.Replies).ToListAsync();
         }
 
-        public Task<Comment> GetByGameIdAsync(int gameId)
+        public async Task<Comment> GetByGameIdAsync(int gameId)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Comments.FirstAsync(c => c.GameId == gameId);
         }
 
-        public Task<Comment> GetByIdAsync(int id)
+        public async Task<Comment> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Comments.FindAsync(id);
         }
 
-        public Task<Comment> GetByIdWithDetailsAsync(int id)
+        public async Task<Comment> GetByIdWithDetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Comments.Include(c => c.Game).Include(c => c.User).Include(c => c.Replies).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<Comment> GetByUserIdAsync(int userId)
+        public async Task<IEnumerable<Comment>> GetByUserIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Comments.Where(c => c.UserId == userId).ToListAsync();
         }
 
         public void Update(Comment entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Comments.Update(entity);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,49 +18,50 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(Cart entity)
+        public async Task AddAsync(Cart entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.Carts.AddAsync(entity);
         }
 
-        public void DeleteAsync(Cart entity)
+        public void Delete(Cart entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Carts.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var cart = await gameStoreDbContext.Carts.FindAsync(id);
+            gameStoreDbContext.Carts.Remove(cart);
         }
 
-        public Task<IEnumerable<Cart>> GetAllAsync()
+        public async Task<IEnumerable<Cart>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Carts.ToListAsync();
         }
 
-        public Task<IEnumerable<Cart>> GetAllWithDetailsAsync()
+        public async Task<IEnumerable<Cart>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Carts.Include(c => c.User).Include(c => c.Games).ToListAsync();
         }
 
-        public Task<Cart> GetByIdAsync(int id)
+        public async Task<Cart> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Carts.FindAsync(id);
         }
 
-        public Task<Cart> GetByIdWithDetailsAsync(int id)
+        public async Task<Cart> GetByIdWithDetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Carts.Include(c => c.User).Include(c => c.Games).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<IEnumerable<Cart>> GetByUserIdAsync(int userId)
+        public async Task<IEnumerable<Cart>> GetByUserIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Carts.Where(c => c.UserId == userId).ToListAsync();
         }
 
         public void Update(Cart entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Carts.Update(entity);
         }
     }
 }

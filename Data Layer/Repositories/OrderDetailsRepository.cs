@@ -1,6 +1,8 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,49 +19,50 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(OrderDetails entity)
+        public async Task AddAsync(OrderDetails entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.OrderDetails.AddAsync(entity);
         }
 
-        public void DeleteAsync(OrderDetails entity)
+        public void Delete(OrderDetails entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.OrderDetails.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var orderDetail = await gameStoreDbContext.OrderDetails.FindAsync(id);
+            gameStoreDbContext.OrderDetails.Remove(orderDetail);
         }
 
-        public Task<IEnumerable<OrderDetails>> GetAllAsync()
+        public async Task<IEnumerable<OrderDetails>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.OrderDetails.ToListAsync();
         }
 
-        public Task<IEnumerable<OrderDetails>> GetAllWithDetailsAsync()
+        public async Task<IEnumerable<OrderDetails>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.OrderDetails.Include(od => od.Game).Include(od => od.Order).ToListAsync();
         }
 
-        public Task<OrderDetails> GetByIdAsync(int id)
+        public async Task<OrderDetails> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.OrderDetails.FindAsync(id);
         }
 
-        public Task<OrderDetails> GetByIdWithDetailsAsync(int id)
+        public async Task<OrderDetails> GetByIdWithDetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.OrderDetails.Include(od => od.Game).Include(od => od.Order).FirstAsync(od => od.Id == id);
         }
 
-        public Task<IEnumerable<OrderDetails>> GetByOrderIdAsync(int orderId)
+        public async Task<IEnumerable<OrderDetails>> GetByOrderIdAsync(int orderId)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
         }
 
         public void Update(OrderDetails entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.OrderDetails.Update(entity);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,34 +18,35 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(Person entity)
+        public async Task AddAsync(Person entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.Persons.AddAsync(entity);
         }
 
         public void DeleteAsync(Person entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Persons.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var person = await gameStoreDbContext.Persons.FindAsync(id);
+            gameStoreDbContext.Persons.Remove(person);
         }
 
-        public Task<IEnumerable<Person>> GetAllAsync()
+        public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Persons.ToListAsync();
         }
 
-        public Task<Person> GetByIdAsync(int id)
+        public async Task<Person> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.Persons.FindAsync(id);
         }
 
         public void Update(Person entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.Persons.Update(entity);
         }
     }
 }

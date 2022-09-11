@@ -12,6 +12,6 @@ namespace Data_Layer.Interfaces
         Task<IEnumerable<Comment>> GetAllWithDetailsAsync();
         Task<Comment> GetByIdWithDetailsAsync(int id);
         Task<Comment> GetByGameIdAsync(int gameId);
-        Task<Comment> GetByUserIdAsync(int userId);
+        Task<IEnumerable<Comment>> GetByUserIdAsync(int userId);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,34 +18,35 @@ namespace Data_Layer.Repositories
         {
             this.gameStoreDbContext = gameStoreDbContext;
         }
-        public Task AddAsync(PEGIRating entity)
+        public async Task AddAsync(PEGIRating entity)
         {
-            throw new NotImplementedException();
+            await gameStoreDbContext.PEGIRatings.AddAsync(entity);
         }
 
         public void DeleteAsync(PEGIRating entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.PEGIRatings.Remove(entity);
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var pegiRating = await gameStoreDbContext.PEGIRatings.FindAsync(id);
+            gameStoreDbContext.PEGIRatings.Remove(pegiRating);
         }
 
-        public Task<IEnumerable<PEGIRating>> GetAllAsync()
+        public async Task<IEnumerable<PEGIRating>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.PEGIRatings.ToListAsync();
         }
 
-        public Task<PEGIRating> GetByIdAsync(int id)
+        public async Task<PEGIRating> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await gameStoreDbContext.PEGIRatings.FindAsync(id);
         }
 
         public void Update(PEGIRating entity)
         {
-            throw new NotImplementedException();
+            gameStoreDbContext.PEGIRatings.Update(entity);
         }
     }
 }
