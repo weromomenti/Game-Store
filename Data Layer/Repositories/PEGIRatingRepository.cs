@@ -23,7 +23,7 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.PEGIRatings.AddAsync(entity);
         }
 
-        public void DeleteAsync(PEGIRating entity)
+        public void Delete(PEGIRating entity)
         {
             gameStoreDbContext.PEGIRatings.Remove(entity);
         }

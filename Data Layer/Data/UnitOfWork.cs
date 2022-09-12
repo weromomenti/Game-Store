@@ -11,16 +11,6 @@ namespace Data_Layer.Data
     public class UnitOfWork : IUnitOfWork
     {
         private readonly GameStoreDbContext gameStoreDbContext;
-        //private IGameRepository gameRepository;
-        //private IGenreRespository genreRespository;
-        //private IPEGIRatingRepository pegiRatingRepository;
-        //private ICommentRepository commentRepository;
-        //private IUserRepository userRepository;
-        //private IPersonRepository personRepository;
-        //private IRoleRepository roleRepository;
-        //private ICartRepository cartRepository;
-        //private IOrderRepository orderRepository;
-        //private IOrderDetailsRepository orderDetailsRepository;
         public UnitOfWork(GameStoreDbContext gameStoreDbContext)
         {
             this.gameStoreDbContext = gameStoreDbContext;

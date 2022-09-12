@@ -23,7 +23,7 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.Roles.AddAsync(entity);
         }
 
-        public void DeleteAsync(Role entity)
+        public void Delete(Role entity)
         {
             gameStoreDbContext.Roles.Remove(entity);
         }
