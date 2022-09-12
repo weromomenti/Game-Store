@@ -58,32 +58,34 @@ namespace Business_Logic_Layer.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public Task AddGenreToGame(int gameId, int genreId)
+        public async Task AddGenreToGameAsync(int gameId, int genreId)
         {
-            var game = unitOfWork.GameRepository.GetByIdAsync(gameId);
-            var genre = unitOfWork.GenreRepository.GetByIdAsync(genreId);
+            var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
+            var genre = await unitOfWork.GenreRepository.GetByIdAsync(genreId);
 
-
+            game.Genres.Add(genre);
         }
 
-        public Task AddPEGIRatingAsync(PEGIRatingModel pegiModel)
+        public async Task AddPEGIRatingAsync(PEGIRatingModel pegiModel)
         {
-            throw new NotImplementedException();
+            await unitOfWork.PEGIRatingRepository.AddAsync(mapper.Map<PEGIRating>(pegiModel));
         }
 
-        public Task DeleteAsync(int modelId)
+        public async Task DeleteAsync(int modelId)
         {
-            throw new NotImplementedException();
+            await unitOfWork.GameRepository.DeleteByIdAsync(modelId);
         }
 
-        public Task<IEnumerable<GameModel>> GetAllAsync()
+        public async Task<IEnumerable<GameModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var games = await unitOfWork.GameRepository.GetAllAsync();
+            return mapper.Map<IEnumerable<GameModel>>(games);
         }
 
-        public Task GetAllPEGIRatingAsync()
+        public async Task<IEnumerable<PEGIRatingModel>> GetAllPEGIRatingAsync()
         {
-            throw new NotImplementedException();
+            var ratings = await unitOfWork.PEGIRatingRepository.GetAllAsync();
+            return mapper.Map<IEnumerable<PEGIRatingModel>>(ratings);
         }
 
         public Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel)
@@ -91,39 +93,41 @@ namespace Business_Logic_Layer.Services
             throw new NotImplementedException();
         }
 
-        public Task<GameModel> GetByIdAsync(int id)
+        public async Task<GameModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var game = await unitOfWork.GameRepository.GetByIdAsync(id);
+            return mapper.Map<GameModel>(game);
         }
 
-        public Task GetPEGIRatingByIdAsync(int pegiId)
+        public async Task<PEGIRatingModel> GetPEGIRatingByIdAsync(int pegiId)
         {
-            throw new NotImplementedException();
+            var rating = await unitOfWork.PEGIRatingRepository.GetByIdAsync(pegiId);
+            return mapper.Map<PEGIRatingModel>(rating);
         }
 
-        public Task RemoveGenreAsync(int genreId)
+        public async Task RemoveGenreAsync(int genreId)
         {
-            throw new NotImplementedException();
+            await unitOfWork.GenreRepository.DeleteByIdAsync(genreId);
         }
 
-        public Task RemovePEGIRatingAsync(PEGIRatingModel pegiModel)
+        public async Task RemovePEGIRatingAsync(int pegiId)
         {
-            throw new NotImplementedException();
+            await unitOfWork.PEGIRatingRepository.DeleteByIdAsync(pegiId);
         }
 
-        public Task UpdateAsync(GameModel model)
+        public async Task UpdateAsync(GameModel model)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => unitOfWork.GameRepository.Update(mapper.Map<Game>(model)));
         }
 
-        public Task UpdateGenreAsync(GenreModel genreModel)
+        public async Task UpdateGenreAsync(GenreModel genreModel)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => unitOfWork.GenreRepository.Update(mapper.Map<Genre>(genreModel)));
         }
 
-        public Task UpdatePEGIRatingAsync(PEGIRatingModel pegiModel)
+        public async Task UpdatePEGIRatingAsync(PEGIRatingModel pegiModel)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => unitOfWork.PEGIRatingRepository.Update(mapper.Map<PEGIRating>(pegiModel)));
         }
     }
 }

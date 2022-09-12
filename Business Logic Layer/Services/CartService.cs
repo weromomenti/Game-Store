@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Business_Logic_Layer.Infrastructure;
+using Business_Logic_Layer.Infrastructure.Validators;
 using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
+using Data_Layer.Entities;
 using Data_Layer.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,20 +17,18 @@ namespace Business_Logic_Layer.Services
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
-        private readonly C
+        private readonly CartValidator validator;
 
         public CartService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
+            validator = new CartValidator();
         }
 
-        public Task AddAsync(CartModel model)
+        public async Task AddAsync(CartModel model)
         {
-            if (model)
-            {
-                throw new GameStoreException();
-            }
+            await unitOfWork.CartRepository.AddAsync(mapper.Map<Cart>(model));
         }
 
         public Task AddGameAsync(int gameId, int cartId)
@@ -41,19 +41,21 @@ namespace Business_Logic_Layer.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(int modelId)
+        public async Task DeleteAsync(int modelId)
         {
-            throw new NotImplementedException();
+            await unitOfWork.CartRepository.DeleteByIdAsync(modelId);
         }
 
-        public Task<IEnumerable<CartModel>> GetAllAsync()
+        public async Task<IEnumerable<CartModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var carts = await unitOfWork.CartRepository.GetAllAsync();
+            return mapper.Map<IEnumerable<CartModel>>(carts);
         }
 
-        public Task<CartModel> GetByIdAsync(int id)
+        public async Task<CartModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var cart = await unitOfWork.CartRepository.GetByIdAsync(id);
+            return mapper.Map<CartModel>(cart);
         }
 
         public Task RemoveGameAsync(int gameId, int cartId)
@@ -61,9 +63,9 @@ namespace Business_Logic_Layer.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(CartModel model)
+        public async Task UpdateAsync(CartModel model)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => unitOfWork.CartRepository.Update(mapper.Map<Cart>(model)));
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using Business_Logic_Layer.Interfaces;
+﻿using AutoMapper;
+using Business_Logic_Layer.Infrastructure.Validators;
+using Business_Logic_Layer.Interfaces;
+using Business_Logic_Layer.Models;
 using Data_Layer.Entities;
+using Data_Layer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +14,40 @@ namespace Business_Logic_Layer.Services
 {
     internal class OrderService : IOrderService
     {
-        public Task AddAsync(Order model)
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
+        private readonly OrderValidator validator;
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            throw new NotImplementedException();
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+            validator = new OrderValidator();
         }
 
-        public Task DeleteAsync(int modelId)
+        public async Task AddAsync(OrderModel model)
         {
-            throw new NotImplementedException();
+            await unitOfWork.OrderRepository.AddAsync(mapper.Map<Order>(model));
         }
 
-        public Task<IEnumerable<Order>> GetAllAsync()
+        public async Task DeleteAsync(int modelId)
         {
-            throw new NotImplementedException();
+            await unitOfWork.OrderRepository.DeleteByIdAsync(modelId);
         }
 
-        public Task<Order> GetByIdAsync(int id)
+        public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var orders = await unitOfWork.OrderRepository.GetAllAsync();
+            return mapper.Map<IEnumerable<OrderModel>>(orders);
         }
 
-        public Task UpdateAsync(Order model)
+        public async Task<Order> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await unitOfWork.OrderRepository.GetByIdAsync(id);
+        }
+
+        public async Task UpdateAsync(OrderModel model)
+        {
+            await Task.Run(() => unitOfWork.OrderRepository.Update(mapper.Map<Order>(model)));
         }
     }
 }
