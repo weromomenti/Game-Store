@@ -40,9 +40,10 @@ namespace Business_Logic_Layer.Services
             return mapper.Map<IEnumerable<OrderModel>>(orders);
         }
 
-        public async Task<Order> GetByIdAsync(int id)
+        public async Task<OrderModel> GetByIdAsync(int id)
         {
-            return await unitOfWork.OrderRepository.GetByIdAsync(id);
+            var orderModel = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            return mapper.Map<OrderModel>(orderModel);
         }
 
         public async Task UpdateAsync(OrderModel model)

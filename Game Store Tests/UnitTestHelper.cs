@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameStoreTests
+namespace Game_Store_Tests
 {
     internal static class UnitTestHelper
     {
         public static DbContextOptions<GameStoreDbContext> GetUnitTestDbOptions()
         {
             var options = new DbContextOptionsBuilder<GameStoreDbContext>()
-                .UseInMemoryDatabase("GameStore")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
             using var context = new GameStoreDbContext(options);

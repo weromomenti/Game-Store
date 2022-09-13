@@ -11,14 +11,14 @@ namespace Business_Logic_Layer.Interfaces
     internal interface IGameService : ICrud<GameModel>
     {
         Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel);
-        Task AddGenreToGame(int gameId, int genreId);
+        Task AddGenreToGameAsync(int gameId, int genreId);
         Task AddGenreAsync(GenreModel genreModel);
         Task RemoveGenreAsync(int genreId);
         Task UpdateGenreAsync(GenreModel genreModel);
         Task AddPEGIRatingAsync(PEGIRatingModel pegiModel);
-        Task RemovePEGIRatingAsync(PEGIRatingModel pegiModel);
-        Task GetAllPEGIRatingAsync();
-        Task GetPEGIRatingByIdAsync(int pegiId);
+        Task RemovePEGIRatingAsync(int pegiId);
+        Task<IEnumerable<PEGIRatingModel>> GetAllPEGIRatingAsync();
+        Task<PEGIRatingModel> GetPEGIRatingByIdAsync(int pegiId);
         Task UpdatePEGIRatingAsync(PEGIRatingModel pegiModel);
     }
 }
