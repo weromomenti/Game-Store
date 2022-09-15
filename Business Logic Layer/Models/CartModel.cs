@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Models
 {
-    internal class CartModel
+    public class CartModel
     {
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }

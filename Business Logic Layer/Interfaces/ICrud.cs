@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Interfaces
 {
-    internal interface ICrud<TModel> where TModel : class
+    public interface ICrud<TModel> where TModel : class
     {
         Task<IEnumerable<TModel>> GetAllAsync();
         Task<TModel> GetByIdAsync(int id);

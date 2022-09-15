@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services
 {
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         public Task AddAsync(UserModel model)
         {

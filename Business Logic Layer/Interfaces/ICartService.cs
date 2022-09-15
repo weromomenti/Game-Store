@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Interfaces
 {
-    internal interface ICartService : ICrud<CartModel>
+    public interface ICartService : ICrud<CartModel>
     {
         Task AddGameAsync(int gameId, int cartId);
         Task RemoveGameAsync(int gameId, int cartId);

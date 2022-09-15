@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Models
 {
-    internal class PEGIRatingModel
+    public class PEGIRatingModel
     {
         public int Id { get; set; }
         public string RatingName { get; set; }

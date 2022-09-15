@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Infrastructure
 {
-    internal class AutoMapperProfile : Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
         {

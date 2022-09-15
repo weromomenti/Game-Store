@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services
 {
-    internal class OrderService : IOrderService
+    public class OrderService : IOrderService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Models
 {
-    internal class OrderModel
+    public class OrderModel
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }

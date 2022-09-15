@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Interfaces
 {
-    internal interface IOrderService : ICrud<OrderModel>
+    public interface IOrderService : ICrud<OrderModel>
     {
 
     }

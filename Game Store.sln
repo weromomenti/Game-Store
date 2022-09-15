@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data Layer", "Data Layer\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business Logic Layer", "Business Logic Layer\Business Logic Layer.csproj", "{DF620A57-455E-42A1-A30C-F07E278A0A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game Store Tests", "Game Store Tests\Game Store Tests.csproj", "{4E278B8E-9A6C-44FC-B9F7-862637731A0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game Store Tests", "Game Store Tests\Game Store Tests.csproj", "{4E278B8E-9A6C-44FC-B9F7-862637731A0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

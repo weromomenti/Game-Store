@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services
 {
-    internal class CommentService : ICommentService
+    public class CommentService : ICommentService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Interfaces
 {
-    internal interface ICommentService : ICrud<CommentModel>
+    public interface ICommentService : ICrud<CommentModel>
     {
         Task AddLikeAsync(int commendId);
         Task RemoveLikeAsync(int commentId);

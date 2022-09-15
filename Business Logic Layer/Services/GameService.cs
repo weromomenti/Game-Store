@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services
 {
-    internal class GameService : IGameService
+    public class GameService : IGameService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -87,7 +87,11 @@ namespace Business_Logic_Layer.Services
             var ratings = await unitOfWork.PEGIRatingRepository.GetAllAsync();
             return mapper.Map<IEnumerable<PEGIRatingModel>>(ratings);
         }
-
+        public async Task<IEnumerable<GenreModel>> GetAllGenresAsync()
+        {
+            var genres = await unitOfWork.GenreRepository.GetAllAsync();
+            return mapper.Map<IEnumerable<GenreModel>>(genres);
+        }
         public Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel)
         {
             throw new NotImplementedException();

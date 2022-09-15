@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services
 {
-    internal class CartService : ICartService
+    public class CartService : ICartService
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;

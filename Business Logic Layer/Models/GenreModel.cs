@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Models
 {
-    internal class GenreModel
+    public class GenreModel
     {
         public int Id { get; set; }
         public string GenreName { get; set; }

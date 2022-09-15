@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Interfaces
 {
-    internal interface IGameService : ICrud<GameModel>
+    public interface IGameService : ICrud<GameModel>
     {
         Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel);
         Task AddGenreToGameAsync(int gameId, int genreId);
@@ -18,6 +18,7 @@ namespace Business_Logic_Layer.Interfaces
         Task AddPEGIRatingAsync(PEGIRatingModel pegiModel);
         Task RemovePEGIRatingAsync(int pegiId);
         Task<IEnumerable<PEGIRatingModel>> GetAllPEGIRatingAsync();
+        Task<IEnumerable<GenreModel>> GetAllGenresAsync();
         Task<PEGIRatingModel> GetPEGIRatingByIdAsync(int pegiId);
         Task UpdatePEGIRatingAsync(PEGIRatingModel pegiModel);
     }
