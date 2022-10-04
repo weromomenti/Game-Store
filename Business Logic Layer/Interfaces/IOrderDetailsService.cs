@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Interfaces
 {
-    public interface IUserService : ICrud<UserModel>
+    public interface IOrderDetailsService : ICrud<OrderDetailsModel>
     {
-        Task UpdateUserRoleAsync(UserModel userModel);
+
     }
 }

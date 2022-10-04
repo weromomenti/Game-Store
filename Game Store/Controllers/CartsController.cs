@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Game_Store.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class CartsController
+    public class CartsController : ControllerBase
     {
         private readonly ICartService cartService;
 

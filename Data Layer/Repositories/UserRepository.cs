@@ -43,7 +43,10 @@ namespace Data_Layer.Repositories
         {
             return await gameStoreDbContext.Users.Include(u => u.Cart).Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).ToListAsync();
         }
-
+        public async Task<User> GetByUserNameAsync(string userName)
+        {
+            return await gameStoreDbContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
         public async Task<User> GetByIdAsync(int id)
         {
             return await gameStoreDbContext.Users.FindAsync(id);

@@ -4,12 +4,13 @@ using Data_Layer.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Game_Store.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/api/[controller]")]
     [ApiController]
-    public class GamesController
+    public class GamesController : ControllerBase
     {
         private readonly IGameService gameService;
 
@@ -18,9 +19,9 @@ namespace Game_Store.Controllers
             this.gameService = gameService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GameModel>>> GetAll([FromQuery] SearchModel searchModel)
         {
-            var games = await gameService.GetAllAsync();
+            var games = await gameService.GetByFilterAsync(searchModel);
             return new OkObjectResult(games);
         }
         [HttpGet("pegi")]
@@ -29,7 +30,7 @@ namespace Game_Store.Controllers
             var pegiRatings = await gameService.GetAllPEGIRatingAsync();
             return new OkObjectResult(pegiRatings);
         }
-        [HttpGet("pegi")]
+        [HttpGet("genres")]
         public async Task<ActionResult<IEnumerable<GenreModel>>> GetAllGenres()
         {
             var genres = await gameService.GetAllGenresAsync();

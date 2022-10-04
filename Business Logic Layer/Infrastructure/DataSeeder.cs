@@ -1,33 +1,32 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game_Store_Tests
+namespace Business_Logic_Layer.Infrastructure
 {
-    internal static class UnitTestHelper
+    public class DataSeeder
     {
-        public static DbContextOptions<GameStoreDbContext> GetUnitTestDbOptions()
+        private readonly GameStoreDbContext dbContext;
+        public DataSeeder(GameStoreDbContext dbContext)
         {
-            var options = new DbContextOptionsBuilder<GameStoreDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            using var context = new GameStoreDbContext(options);
-
-            SeedData(context);
-
-            return options;
+            this.dbContext = dbContext;
         }
-        public static void SeedData(GameStoreDbContext context)
+        public void Seed()
+        {
+            if (!dbContext.Games.Any())
+            {
+                AddData(dbContext);
+            }
+        }
+        public void AddData(GameStoreDbContext context)
         {
             context.Games.AddRangeAsync(
-                new Game { Id = 1, Name = "Game1", Description = "Description1", PEGIRatingId = 1, ImageUrl = "Url1", Price = 30m },
-                new Game { Id = 2, Name = "Game2", Description = "Description2", PEGIRatingId = 2, ImageUrl = "Url2", Price = 40m });
+                new Game { Id = 1, Name = "The Witcher 3: Wild Hunt", Description = "Description", PEGIRatingId = 1, ImageUrl = "https://picfiles.alphacoders.com/198/thumb-198636.jpg", Price = 30m },
+                new Game { Id = 2, Name = "Battlefield V", Description = "Description", PEGIRatingId = 2, ImageUrl = "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg", Price = 40m });
             context.Genres.AddRange(
                 new Genre { Id = 1, GenreName = "Genre1" },
                 new Genre { Id = 2, GenreName = "Genre2" });

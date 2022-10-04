@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Models
 {
-    public class RoleModel
+    public class IdentityModel
     {
-        public int Id { get; set; }
-        public string RoleName { get; set; }
     }
 }

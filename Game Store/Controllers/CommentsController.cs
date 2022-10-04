@@ -7,7 +7,7 @@ namespace Game_Store.Controllers
 {
     [Route("/api/[controller]")]
     [ApiController]
-    public class CommentsController
+    public class CommentsController : ControllerBase
     {
         private readonly ICommentService commentService;
 

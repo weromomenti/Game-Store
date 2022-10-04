@@ -92,9 +92,18 @@ namespace Business_Logic_Layer.Services
             var genres = await unitOfWork.GenreRepository.GetAllAsync();
             return mapper.Map<IEnumerable<GenreModel>>(genres);
         }
-        public Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel)
+        public async Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel)
         {
-            throw new NotImplementedException();
+            var games = await unitOfWork.GameRepository.GetAllAsync();
+            if (searchModel?.Title != null)
+            {
+                games = games.Where(g => g.Name == searchModel.Title);
+            }
+            if (searchModel?.Genre != null)
+            {
+                games = games.Where(g => g.Genres.Select(g => g.GenreName).Contains(searchModel.Genre));
+            }
+            return mapper.Map<IEnumerable<GameModel>>(games);
         }
 
         public async Task<GameModel> GetByIdAsync(int id)

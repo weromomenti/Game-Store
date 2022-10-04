@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Game_Store.Controllers
 {
-    public class OrdersController
+    public class OrdersController : ControllerBase
     {
         private readonly IOrderService orderService;
 

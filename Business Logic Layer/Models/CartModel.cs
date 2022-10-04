@@ -10,7 +10,7 @@ namespace Business_Logic_Layer.Models
     {
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
-        public bool IsCheckedOut { get; set; }
+        public bool IsCheckedOut { get; set; } = false;
         public ICollection<int> GameIds { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace Data_Layer.Interfaces
     {
         Task<IEnumerable<User>> GetAllWithDetailsAync();
         Task<User> GetByIdWithDetailsAsync(int id);
+        Task<User> GetByUserNameAsync(string userName);
         Task<IEnumerable<User>> GetByRoleIdAsync(int roleId);
     }
 }

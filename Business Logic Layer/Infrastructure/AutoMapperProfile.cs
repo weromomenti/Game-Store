@@ -47,7 +47,7 @@ namespace Business_Logic_Layer.Infrastructure
                 .ForMember(um => um.CartId, x => x.MapFrom(u => u.Cart.Id))
                 .ForMember(um => um.FirstName, x => x.MapFrom(u => u.Person.FirstName))
                 .ForMember(um => um.LastName, x => x.MapFrom(u => u.Person.LastName))
-                .ForMember(um => um.Password, x => x.MapFrom(u => u.Password))
+                .ForMember(um => um.Password, x => x.MapFrom(u => u.PasswordHash))
                 .ForMember(um => um.Email, x => x.MapFrom(u => u.Email))
                 .ForMember(um => um.Avatar, x => x.MapFrom(u => u.Avatar))
                 .ReverseMap();
