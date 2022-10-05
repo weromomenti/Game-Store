@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business_Logic_Layer.Infrastructure;
 using Business_Logic_Layer.Infrastructure.Validators;
 using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
@@ -29,6 +30,51 @@ namespace Business_Logic_Layer.Services
             await unitOfWork.OrderRepository.AddAsync(mapper.Map<Order>(model));
         }
 
+        public async Task AddGameAsync(int id, int gameId)
+        {
+            var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
+            if (game == null)
+            {
+                throw new GameStoreException();
+            }
+            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            var orderDetail = order.OrderDetails.SingleOrDefault(od => od?.Game?.Id == gameId);
+
+            if (orderDetail == null)
+            {
+                order.OrderDetails.Add(new OrderDetails { Game = game, GameId = game.Id, Order = order, OrderId = order.Id, Quantity = 1, UnitPrice = game.Price });
+            }
+            else
+            {
+                orderDetail.Quantity++;
+            }
+        }
+        public async Task RemoveGameAsync(int id, int gameId)
+        {
+            var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
+            if (game == null)
+            {
+                throw new GameStoreException();
+            }
+            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            var orderDetail = order.OrderDetails.SingleOrDefault(od => od?.Game?.Id == gameId);
+
+            if (orderDetail == null)
+            {
+                throw new GameStoreException();
+            }
+            
+            if (orderDetail.Quantity == 1)
+            {
+                order.OrderDetails.Remove(orderDetail);
+            }
+            else
+            {
+                orderDetail.Quantity--;
+            }
+            await unitOfWork.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(int modelId)
         {
             await unitOfWork.OrderRepository.DeleteByIdAsync(modelId);
@@ -46,9 +92,28 @@ namespace Business_Logic_Layer.Services
             return mapper.Map<OrderModel>(orderModel);
         }
 
+        public async Task<IEnumerable<OrderDetailsModel>> GetAllOrderDetailsAsync()
+        {
+            var orderDetails = await unitOfWork.OrderDetailsRepository.GetAllAsync();
+            return mapper.Map<IEnumerable<OrderDetailsModel>>(orderDetails);
+        }
+
+        public async Task<OrderDetailsModel> GetOrderDetailsByIdAsync(int id)
+        {
+            var orderDetail = await unitOfWork.OrderDetailsRepository.GetByIdAsync(id);
+            return mapper.Map<OrderDetailsModel>(orderDetail);
+        }
+
         public async Task UpdateAsync(OrderModel model)
         {
             await Task.Run(() => unitOfWork.OrderRepository.Update(mapper.Map<Order>(model)));
+        }
+
+        public async Task CheckoutAsync(int id)
+        {
+            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            order.IsCheckecOut = true;
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

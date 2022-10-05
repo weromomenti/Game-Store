@@ -17,7 +17,7 @@ namespace Business_Logic_Layer.Infrastructure.Validators
             RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.GameId).NotEmpty();
             RuleFor(x => x.Text).NotEmpty();
-            RuleFor(x => x.Created).LessThanOrEqualTo(DateTime.Now);
+            RuleFor(x => x.PostDate).LessThanOrEqualTo(DateTime.Now);
             RuleFor(x => x.Likes).GreaterThanOrEqualTo(0);
             RuleFor(x => x.Dislikes).GreaterThanOrEqualTo(0);
         }

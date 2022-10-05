@@ -31,8 +31,8 @@ namespace Business_Logic_Layer.Infrastructure
                 new Genre { Id = 1, GenreName = "Genre1" },
                 new Genre { Id = 2, GenreName = "Genre2" });
             context.PEGIRatings.AddRange(
-                new PEGIRating { Id = 1, Name = "PEGI1" },
-                new PEGIRating { Id = 2, Name = "PEGI2" });
+                new PEGIRating { Id = 1, RatingName = "PEGI1" },
+                new PEGIRating { Id = 2, RatingName = "PEGI2" });
             context.Comments.AddRange(
                 new Comment { Id = 1, GameId = 1, Likes = 0, Dislikes = 0, PostDate = DateTime.Today, Text = "Comment1", UserId = 1 },
                 new Comment { Id = 2, GameId = 1, Likes = 1, Dislikes = 2, PostDate = DateTime.Today, Text = "Comment2", UserId = 2 });

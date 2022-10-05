@@ -21,5 +21,6 @@ namespace Business_Logic_Layer.Interfaces
         Task<IEnumerable<GenreModel>> GetAllGenresAsync();
         Task<PEGIRatingModel> GetPEGIRatingByIdAsync(int pegiId);
         Task UpdatePEGIRatingAsync(PEGIRatingModel pegiModel);
+        Task<GenreModel> GetGenreByIdAsync(int id);
     }
 }

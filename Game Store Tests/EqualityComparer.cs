@@ -37,7 +37,7 @@ namespace Game_Store_Tests
                 return false;
 
             return x.Id == y.Id
-                && x.Name == y.Name;
+                && x.RatingName == y.RatingName;
         }
 
         public int GetHashCode([DisallowNull] PEGIRating obj)

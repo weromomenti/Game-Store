@@ -45,7 +45,7 @@ namespace Game_Store_Tests.Data_Tests
             var PEGIRatingRepository = new PEGIRatingRepository(context);
 
             var prevCount = context.PEGIRatings.Count();
-            var newGame = new PEGIRating { Id = 3, Name = "NewName" };
+            var newGame = new PEGIRating { Id = 3, RatingName = "NewName" };
 
             await PEGIRatingRepository.AddAsync(newGame);
             await context.SaveChangesAsync();
@@ -76,7 +76,7 @@ namespace Game_Store_Tests.Data_Tests
             var newPEGIRating = new PEGIRating
             {
                 Id = 1,
-                Name = "UpdatedPEGIRatingName",
+                RatingName = "UpdatedPEGIRatingName",
             };
             PEGIRatingRepository.Update(newPEGIRating);
             await context.SaveChangesAsync();
@@ -88,8 +88,8 @@ namespace Game_Store_Tests.Data_Tests
 
         private static IEnumerable<PEGIRating> ExpectedPEGIRatings => new[]
         {
-            new PEGIRating { Id = 1, Name = "PEGI1" },
-            new PEGIRating { Id = 2, Name = "PEGI2" }
+            new PEGIRating { Id = 1, RatingName = "PEGI1" },
+            new PEGIRating { Id = 2, RatingName = "PEGI2" }
         };
     }
 }

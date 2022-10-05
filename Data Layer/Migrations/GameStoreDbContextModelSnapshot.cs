@@ -107,7 +107,7 @@ namespace Data_Layer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("RatingName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -201,7 +201,7 @@ namespace Data_Layer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("RatingName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

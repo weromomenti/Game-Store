@@ -116,8 +116,8 @@ namespace Game_Store_Tests.Data_Tests
         };
         private static IEnumerable<PEGIRating> ExpectedPEGIRatings => new[]
         {
-            new PEGIRating {Id = 1, Name = "PEGI1" },
-            new PEGIRating {Id = 2, Name = "PEGI2"}
+            new PEGIRating {Id = 1, RatingName = "PEGI1" },
+            new PEGIRating {Id = 2, RatingName = "PEGI2"}
         };
     }
 }

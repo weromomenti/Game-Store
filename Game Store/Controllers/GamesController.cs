@@ -19,7 +19,7 @@ namespace Game_Store.Controllers
             this.gameService = gameService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameModel>>> GetAll([FromQuery] SearchModel searchModel)
+        public async Task<ActionResult<IEnumerable<GameModel>>> GetAllGames([FromQuery] SearchModel searchModel)
         {
             var games = await gameService.GetByFilterAsync(searchModel);
             return new OkObjectResult(games);
@@ -42,10 +42,28 @@ namespace Game_Store.Controllers
             var game = await gameService.GetByIdAsync(id);
             return new OkObjectResult(game);
         }
+        [HttpGet("genre/{id}")]
+        public async Task<ActionResult<GenreModel>> GetGenreByIdAsync(int id)
+        {
+            var genre = await gameService.GetGenreByIdAsync(id);
+            return new OkObjectResult(genre);
+        }
         [HttpPost]
         public async Task<ActionResult> AddGameAsync([FromBody] GameModel model)
         {
             await gameService.AddAsync(model);
+            return new OkResult();
+        }
+        [HttpPost("genres")]
+        public async Task<ActionResult> AddGenreAsync([FromBody] GenreModel genre)
+        {
+            await gameService.AddGenreAsync(genre);
+            return new OkResult();
+        }
+        [HttpPost("pegi")]
+        public async Task<ActionResult> AddPEGIAsync([FromBody] PEGIRatingModel pegi)
+        {
+            await gameService.AddPEGIRatingAsync(pegi);
             return new OkResult();
         }
         [HttpPut("{id}")]
@@ -54,10 +72,34 @@ namespace Game_Store.Controllers
             await gameService.UpdateAsync(gameModel);
             return new OkResult();
         }
+        [HttpPut("genre/{id}")]
+        public async Task<ActionResult> UpdateGenreAsync(int id, [FromBody] GenreModel genreModel)
+        {
+            await gameService.UpdateGenreAsync(genreModel);
+            return new OkResult();
+        }
+        [HttpPut("pegi/{id}")]
+        public async Task<ActionResult> UpdatePegiAsync(int id, [FromBody] PEGIRatingModel pegi)
+        {
+            await gameService.UpdatePEGIRatingAsync(pegi);
+            return new OkResult();
+        }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<IEnumerable<GameModel>>> DeleteGameAsync(int id)
+        public async Task<ActionResult> DeleteGameAsync(int id)
         {
             await gameService.DeleteAsync(id);
+            return new OkResult();
+        }
+        [HttpDelete("genre/{id}")]
+        public async Task<ActionResult> DeleteGenreAsync(int id)
+        {
+            await gameService.RemoveGenreAsync(id);
+            return new OkResult();
+        }
+        [HttpDelete("pegi/{id}")]
+        public async Task<ActionResult> DeletePegiAsync(int id)
+        {
+            await gameService.RemovePEGIRatingAsync(id);
             return new OkResult();
         }
     }

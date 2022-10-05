@@ -9,9 +9,5 @@ namespace Business_Logic_Layer.Interfaces
 {
     public interface ICommentService : ICrud<CommentModel>
     {
-        Task AddLikeAsync(int commendId);
-        Task RemoveLikeAsync(int commentId);
-        Task AddDislikeAsync(int commendId);
-        Task RemoveDislikeAsync(int commentId);
     }
 }

@@ -10,8 +10,6 @@ namespace Business_Logic_Layer.Interfaces
 {
     public interface IUserService : ICrud<UserModel>
     {
-        Task DeleteAsync(int modelId);
-        Task UpdateUserRoleAsync(UserModel userModel);
         Task<User> GetByUserNameAsync(string userName);
     }
 }

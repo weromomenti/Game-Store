@@ -30,6 +30,18 @@ namespace Game_Store.Controllers
             await orderService.UpdateAsync(orderModel);
             return new OkResult();
         }
+        [HttpPut("addGame/{id}/{gameId}")]
+        public async Task<ActionResult> AddGameAsync(int id, int gameId)
+        {
+            await orderService.AddGameAsync(id, gameId);
+            return new OkResult();
+        }
+        [HttpPut("removeGame/{id}/{gameId}")]
+        public async Task<ActionResult> RemoveGameAsync(int id, int gameId)
+        {
+            await orderService.RemoveGameAsync(id, gameId);
+            return new OkResult();
+        }
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteOrderAsync(int id)
         {

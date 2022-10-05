@@ -7,6 +7,7 @@ using Data_Layer.Interfaces;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,14 +26,16 @@ namespace Business_Logic_Layer.Services
             this.mapper = mapper;
             this.userValidator = new UserValidator();
         }
-        public Task AddAsync(UserModel model)
+        public async Task AddAsync(UserModel model)
         {
-            throw new NotImplementedException();
+            await unitOfWork.UserRepository.AddAsync(mapper.Map<User>(model));
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int modelId)
+        public async Task DeleteAsync(int modelId)
         {
-            throw new NotImplementedException();
+            await unitOfWork.UserRepository.DeleteByIdAsync(modelId);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<UserModel>> GetAllAsync()
@@ -46,18 +49,15 @@ namespace Business_Logic_Layer.Services
             var user = await unitOfWork.UserRepository.GetByUserNameAsync(userName);
             return user;
         }
-        public Task<UserModel> GetByIdAsync(int id)
+        public async Task<UserModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
-        }
-        public Task UpdateAsync(UserModel model)
-        {
-            throw new NotImplementedException();
-        }
+            var user = await unitOfWork.UserRepository.GetByIdAsync(id);
 
-        public Task UpdateUserRoleAsync(UserModel userModel)
+            return mapper.Map<UserModel>(user);
+        }
+        public async Task UpdateAsync(UserModel model)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => unitOfWork.UserRepository.Update(mapper.Map<User>(model)));
         }
     }
 }

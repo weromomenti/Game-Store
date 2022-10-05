@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Infrastructure
 {
-    public class GameStoreException
+    public class GameStoreException : Exception
     {
     }
 }

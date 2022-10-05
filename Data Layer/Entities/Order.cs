@@ -10,6 +10,7 @@ namespace Data_Layer.Entities
     {
         public int UserId { get; set; }
         public DateTime OrderDate { get; set; }
+        public bool IsCheckecOut { get; set; }
         public User? User { get; set; }
         public ICollection<OrderDetails> OrderDetails { get; set; }
     }
