@@ -74,6 +74,7 @@ namespace Business_Logic_Layer.Services
         public async Task DeleteAsync(int modelId)
         {
             await unitOfWork.GameRepository.DeleteByIdAsync(modelId);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<GameModel>> GetAllAsync()
@@ -95,13 +96,13 @@ namespace Business_Logic_Layer.Services
         public async Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel)
         {
             var games = await unitOfWork.GameRepository.GetAllAsync();
-            if (searchModel?.Title != null)
+            if (searchModel?.Title != null && searchModel?.Title != string.Empty)
             {
                 games = games.Where(g => g.Name == searchModel.Title);
             }
-            if (searchModel?.Genre != null)
+            if (searchModel?.Genre != null && searchModel.Genre.Length > 0)
             {
-                games = games.Where(g => g.Genres.Select(g => g.GenreName).Contains(searchModel.Genre));
+                // games = games.Where(g => g.Genres.Select(g => g.GenreName).Contains(searchModel.Genre));
             }
             return mapper.Map<IEnumerable<GameModel>>(games);
         }

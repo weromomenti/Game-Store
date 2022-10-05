@@ -1,0 +1,30 @@
+* {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: azure;
+}
+.search-genres{
+    margin-bottom: 20px;
+}
+.add-genre{
+    margin-right: 5px;
+}
+.genre{
+    margin-right: 5px;
+}
+.search-bar{
+    margin-right: 5px;
+}
+.inner {
+    display: flex;
+    width: 1160px;
+    justify-content: space-between;
+    
+}
+.left{
+    display: flex;
+}
+
+.search-genres {
+    display: flex;
+    justify-content: center;
+}

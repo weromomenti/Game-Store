@@ -17,7 +17,7 @@ namespace Game_Store.Controllers
     {
         private readonly IUserService userService;
 
-        public UsersController(IUserService userService, UserManager<User> userManager)
+        public UsersController(IUserService userService/*, UserManager<User> userManager*/)
         {
             this.userService = userService;
             //this.userManager = userManager;

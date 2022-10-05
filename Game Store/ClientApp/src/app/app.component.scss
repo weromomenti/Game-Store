@@ -1,0 +1,99 @@
+* {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color:azure;
+    /*border-color: rgb(0, 0, 0);
+    border-style: solid;*/
+}
+body {
+    margin:0;
+    padding: 0;
+    background-color:black;
+}
+main {
+    position: relative;
+    background-color:rgb(31, 31, 31);
+}
+nav {
+    margin: 0;
+    padding: 0;
+}
+ul {
+    display: inline;
+    list-style-type: none;
+    position: absolute;
+    top:15px;
+    padding: 0;
+}
+nav > ul > li:not(:first-child) {
+    margin-left: 20px;
+}
+nav > ul > li {
+    display: inline;
+}
+nav > ul > li > h3 > a {
+    text-decoration: none;
+}
+.logo {
+    display: inline;
+    margin-right: 30px;
+    width:75px;
+    height: 75px;
+}
+.login {
+    position: absolute;
+    right:30px;
+    top:30px;
+}
+.search-bar{
+    background-color:darkgrey;
+    border-style: none;
+    margin: 0;
+    padding: 0;
+}
+.items-list{
+    display:flex;
+    flex-wrap:wrap;
+}
+.items-list > div {
+    position: relative;
+    width: 240px;
+    height: 400px;
+    margin: 20px;
+}
+
+.title {
+    display: inline;
+    position: relative;
+    bottom: 26px;
+    margin-right:100px
+}
+li > h3 {
+    display: inline;
+}
+.add-genre{
+    margin-left:20px;
+    background-color: transparent;
+    border: none;
+}
+.genre {
+    display: inline;
+    margin: 5px;
+    padding: 3px;
+    border-radius: 20px;
+    background-color: dodgerblue;
+}
+.search-genres {
+    position: relative;
+    margin-bottom: 17px;
+    top: 20px;
+}
+.search-container {
+    position: absolute;
+    display: inline;
+    right:110px;
+    height: 23px;
+}
+.search-container > i {
+    margin:0;
+    padding: 0;
+}

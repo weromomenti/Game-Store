@@ -11,6 +11,6 @@ namespace Business_Logic_Layer.Models
     {
         [MinLength(3)]
         public string? Title { get; set; }
-        public string? Genre { get; set; }
+        public string[]? Genre { get; set; }
     }
 }

@@ -1,0 +1,20 @@
+.container{
+    display: flex;
+    
+    justify-content: center;
+}
+.inner{
+    display: flex;
+    flex-wrap: wrap;
+    width: 1160px;
+}
+.div1{
+    height: 200px;
+    width: 200px;
+    
+    margin-right: 10px;
+}
+
+.img1{
+    height: 200px;
+}

@@ -13,8 +13,8 @@ namespace Business_Logic_Layer.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public string Image { get; set; }
-        public ICollection<int> GenreIds { get; set; }
-        public ICollection<int> CommentIds { get; set; }
+        public string? Image { get; set; }
+        public ICollection<int>? GenreIds { get; set; }
+        public ICollection<int>? CommentIds { get; set; }
     }
 }

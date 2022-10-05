@@ -1,0 +1,15 @@
+<div *ngIf="game">
+    <h2>{{game.name}}</h2>
+    <div>
+        Name: 
+        <input [(ngModel)] = "game.name" placeholder="{{game.name}}">
+    </div>
+    <div>
+        Description: 
+        <input [(ngModel)] = "game.description" placeholder="{{game.description}}">
+    </div>
+    <div>
+        Name: 
+        <input [(ngModel)] = "game.price" placeholder="{{game.price}}">
+    </div>
+</div>
