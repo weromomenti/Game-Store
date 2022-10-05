@@ -23,7 +23,7 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.Comments.AddAsync(entity);
         }
 
-        public async void Delete(Comment entity)
+        public void Delete(Comment entity)
         {
             gameStoreDbContext.Comments.Remove(entity);
         }

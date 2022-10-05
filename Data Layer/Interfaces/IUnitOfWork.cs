@@ -15,7 +15,6 @@ namespace Data_Layer.Interfaces
         IUserRepository UserRepository { get; }
         IPersonRepository PersonRepository { get; }
         IRoleRepository RoleRepository { get; }
-        ICartRepository CartRepository { get; }
         IOrderRepository OrderRepository { get; }
         IOrderDetailsRepository OrderDetailsRepository { get; }
         Task SaveChangesAsync();

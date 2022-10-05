@@ -27,6 +27,18 @@ namespace Game_Store.Controllers
             var comment = await commentService.GetByIdAsync(id);
             return new OkObjectResult(comment);
         }
+        [HttpPost]
+        public async Task<ActionResult> PostCommentAsync([FromBody] CommentModel comment)
+        {
+            await commentService.AddAsync(comment);
+            return new OkObjectResult(comment);
+        }
+        [HttpPost("reply/{id}")]
+        public async Task<ActionResult> ReplyCommentAsync(int id, [FromBody] CommentModel comment)
+        {
+            await commentService.ReplyCommentAsync(id, comment);
+            return new OkObjectResult(comment);
+        }
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCommentAsync(int id, [FromBody] CommentModel comment)
         {

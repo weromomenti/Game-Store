@@ -136,24 +136,6 @@ namespace Game_Store_Tests
             return obj.GetHashCode();
         }
     }
-    internal class CartComparer : IEqualityComparer<Cart>
-    {
-        public bool Equals(Cart? x, Cart? y)
-        {
-            if (x == null && y == null)
-                return true;
-            if (x == null || y == null)
-                return false;
-
-            return x.Id == y.Id
-                && x.UserId == y.UserId
-                && x.TotalPrice == y.TotalPrice;
-        }
-        public int GetHashCode([DisallowNull] Cart obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
     internal class OrderComparer : IEqualityComparer<Order>
     {
         public bool Equals(Order? x, Order? y)

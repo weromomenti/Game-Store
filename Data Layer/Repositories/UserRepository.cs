@@ -41,7 +41,7 @@ namespace Data_Layer.Repositories
 
         public async Task<IEnumerable<User>> GetAllWithDetailsAync()
         {
-            return await gameStoreDbContext.Users.Include(u => u.Cart).Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).ToListAsync();
+            return await gameStoreDbContext.Users.Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).ToListAsync();
         }
         public async Task<User> GetByUserNameAsync(string userName)
         {
@@ -54,7 +54,7 @@ namespace Data_Layer.Repositories
 
         public async Task<User> GetByIdWithDetailsAsync(int id)
         {
-            return await gameStoreDbContext.Users.Include(u => u.Cart).Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).FirstAsync(u => u.Id == id);
+            return await gameStoreDbContext.Users.Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).FirstAsync(u => u.Id == id);
         }
 
         public async Task<IEnumerable<User>> GetByRoleIdAsync(int roleId)

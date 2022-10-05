@@ -21,7 +21,6 @@ namespace Data_Layer.Data
             UserRepository = new UserRepository(gameStoreDbContext);
             PersonRepository = new PersonRepository(gameStoreDbContext);
             RoleRepository = new RoleRepository(gameStoreDbContext);
-            CartRepository = new CartRepository(gameStoreDbContext);
             OrderRepository = new OrderRepository(gameStoreDbContext);
             OrderDetailsRepository = new OrderDetailsRepository(gameStoreDbContext);
         }
@@ -38,8 +37,6 @@ namespace Data_Layer.Data
         public IPersonRepository PersonRepository { get; set; }
 
         public IRoleRepository RoleRepository { get; set; }
-
-        public ICartRepository CartRepository { get; set; }
 
         public IOrderRepository OrderRepository { get; set; }
 

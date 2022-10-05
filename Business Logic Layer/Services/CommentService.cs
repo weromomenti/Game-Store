@@ -50,6 +50,27 @@ namespace Business_Logic_Layer.Services
             return mapper.Map<CommentModel>(comment);
         }
 
+        public async Task<CommentModel> ReplyCommentAsync(int id, CommentModel reply)
+        {
+            var comment = await unitOfWork.CommentRepository.GetByIdAsync(id);
+            if (comment.Replies == null)
+            {
+                comment.Replies = new List<Comment>();
+            }
+            comment.Replies.Add(new Comment 
+            { 
+                Game = comment.Game, 
+                GameId = comment.GameId, 
+                Dislikes = 0, 
+                Likes = 0, 
+                PostDate = reply.PostDate,
+                Text = reply.Text,
+                User = await unitOfWork.UserRepository.GetByIdAsync(reply.UserId), 
+                UserId = reply.UserId
+            });
+            return mapper.Map<CommentModel>(comment);
+        }
+
         public async Task UpdateAsync(CommentModel model)
         {
             await Task.Run(() => unitOfWork.CommentRepository.Update(mapper.Map<Comment>(model)));

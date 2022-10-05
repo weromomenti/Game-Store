@@ -19,7 +19,6 @@ namespace Data_Layer.Entities
         public string? Avatar { get; set; }
         public Person Person { get; set; }
         public Role? Role { get; set; }
-        public Cart? Cart { get; set; }
         public ICollection<Comment> Comments { get; set; }
     }
 }

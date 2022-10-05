@@ -12,6 +12,5 @@ namespace Business_Logic_Layer.Models
         public int GameId { get; set; }
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
-        public bool IsCheckedOut { get; set; }
     }
 }

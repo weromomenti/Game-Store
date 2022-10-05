@@ -45,9 +45,6 @@ namespace Business_Logic_Layer.Infrastructure
             context.Roles.AddRange(
                 new Role { Id = 1, RoleName = "User" },
                 new Role { Id = 2, RoleName = "Manager" });
-            context.Carts.AddRange(
-                new Cart { Id = 1, UserId = 1, TotalPrice = 20m, IsCheckedOut = false },
-                new Cart { Id = 2, UserId = 2, TotalPrice = 30m, IsCheckedOut = true });
             context.Orders.AddRange(
                 new Order { Id = 1, UserId = 1, OrderDate = DateTime.Today },
                 new Order { Id = 2, UserId = 2, OrderDate = DateTime.Today });

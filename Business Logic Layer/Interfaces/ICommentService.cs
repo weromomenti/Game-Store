@@ -9,5 +9,6 @@ namespace Business_Logic_Layer.Interfaces
 {
     public interface ICommentService : ICrud<CommentModel>
     {
+        Task<CommentModel> ReplyCommentAsync(int id, CommentModel reply);
     }
 }

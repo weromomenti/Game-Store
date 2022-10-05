@@ -25,7 +25,6 @@ namespace Business_Logic_Layer.Infrastructure
                 .ForMember(cm => cm.ReplyIds, x => x.MapFrom(c => c.Replies.Select(r => r.Id)))
                 .ReverseMap();
             CreateMap<User, UserModel>()
-                .ForMember(um => um.CartId, x => x.MapFrom(u => u.Cart.Id))
                 .ForMember(um => um.FirstName, x => x.MapFrom(u => u.Person.FirstName))
                 .ForMember(um => um.LastName, x => x.MapFrom(u => u.Person.LastName))
                 .ForMember(um => um.Password, x => x.MapFrom(u => u.PasswordHash))
