@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business_Logic_Layer.Infrastructure;
 using Business_Logic_Layer.Infrastructure.Validators;
 using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
@@ -32,28 +33,14 @@ namespace Business_Logic_Layer.Services
 
         public async Task AddAsync(GameModel model)
         {
-            try
-            {
-                await gameValidator.ValidateAsync(model);
-            }
-            catch (ArgumentNullException)
-            {
-                throw new Exception("Argument is Null");
-            }
+            await gameValidator.ValidateAndThrowAsync(model);
             await unitOfWork.GameRepository.AddAsync(mapper.Map<Game>(model));
             await unitOfWork.SaveChangesAsync();
         }
 
         public async Task AddGenreAsync(GenreModel genreModel)
         {
-            try
-            {
-                await genreValidator.ValidateAsync(genreModel);
-            }
-            catch (ArgumentNullException)
-            {
-                throw new Exception("Argument is Null");
-            }
+            await genreValidator.ValidateAndThrowAsync(genreModel);
             await unitOfWork.GenreRepository.AddAsync(mapper.Map<Genre>(genreModel));
             await unitOfWork.SaveChangesAsync();
         }
@@ -68,6 +55,7 @@ namespace Business_Logic_Layer.Services
 
         public async Task AddPEGIRatingAsync(PEGIRatingModel pegiModel)
         {
+            await pEGIRatingValidator.ValidateAndThrowAsync(pegiModel);
             await unitOfWork.PEGIRatingRepository.AddAsync(mapper.Map<PEGIRating>(pegiModel));
         }
 
@@ -104,7 +92,7 @@ namespace Business_Logic_Layer.Services
 
             if (searchModel?.Title != null && searchModel?.Title != string.Empty)
             {
-                games = games.Where(g => g.Name == searchModel.Title);
+                games = games.Where(g => g.Name == searchModel?.Title);
             }
             if (searchModel?.Genre != null && searchModel.Genre.Length > 0)
             {
@@ -128,26 +116,37 @@ namespace Business_Logic_Layer.Services
         public async Task RemoveGenreAsync(int genreId)
         {
             await unitOfWork.GenreRepository.DeleteByIdAsync(genreId);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task RemovePEGIRatingAsync(int pegiId)
         {
             await unitOfWork.PEGIRatingRepository.DeleteByIdAsync(pegiId);
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(GameModel model)
+        public async Task<GameModel> UpdateAsync(GameModel model)
         {
+            await gameValidator.ValidateAndThrowAsync(model);
             await Task.Run(() => unitOfWork.GameRepository.Update(mapper.Map<Game>(model)));
+            await unitOfWork.SaveChangesAsync();
+            return model;
         }
 
-        public async Task UpdateGenreAsync(GenreModel genreModel)
+        public async Task<GenreModel> UpdateGenreAsync(GenreModel genreModel)
         {
+            await genreValidator.ValidateAndThrowAsync(genreModel);
             await Task.Run(() => unitOfWork.GenreRepository.Update(mapper.Map<Genre>(genreModel)));
+            await unitOfWork.SaveChangesAsync();
+            return genreModel;
         }
 
-        public async Task UpdatePEGIRatingAsync(PEGIRatingModel pegiModel)
+        public async Task<PEGIRatingModel> UpdatePEGIRatingAsync(PEGIRatingModel pegiModel)
         {
+            await pEGIRatingValidator.ValidateAndThrowAsync(pegiModel);
             await Task.Run(() => unitOfWork.PEGIRatingRepository.Update(mapper.Map<PEGIRating>(pegiModel)));
+            await unitOfWork.SaveChangesAsync();
+            return pegiModel;
         }
     }
 }

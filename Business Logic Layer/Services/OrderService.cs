@@ -5,6 +5,7 @@ using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +18,22 @@ namespace Business_Logic_Layer.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        private readonly OrderValidator validator;
+        private readonly OrderValidator orderValidator;
         public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            validator = new OrderValidator();
+            orderValidator = new OrderValidator();
         }
 
         public async Task AddAsync(OrderModel model)
         {
+            await orderValidator.ValidateAndThrowAsync(model);
             await unitOfWork.OrderRepository.AddAsync(mapper.Map<Order>(model));
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task AddGameAsync(int id, int gameId)
+        public async Task<OrderModel> AddGameAsync(int id, int gameId)
         {
             var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
             if (game == null)
@@ -42,14 +45,24 @@ namespace Business_Logic_Layer.Services
 
             if (orderDetail == null)
             {
-                order.OrderDetails.Add(new OrderDetails { Game = game, GameId = game.Id, Order = order, OrderId = order.Id, Quantity = 1, UnitPrice = game.Price });
+                order.OrderDetails.Add(new OrderDetails
+                {
+                    Game = game,
+                    GameId = game.Id,
+                    Order = order,
+                    OrderId = order.Id,
+                    Quantity = 1,
+                    UnitPrice = game.Price
+                });
             }
             else
             {
                 orderDetail.Quantity++;
             }
+            await unitOfWork.SaveChangesAsync();
+            return mapper.Map<OrderModel>(order);
         }
-        public async Task RemoveGameAsync(int id, int gameId)
+        public async Task<OrderModel> RemoveGameAsync(int id, int gameId)
         {
             var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
             if (game == null)
@@ -63,7 +76,7 @@ namespace Business_Logic_Layer.Services
             {
                 throw new GameStoreException();
             }
-            
+
             if (orderDetail.Quantity == 1)
             {
                 order.OrderDetails.Remove(orderDetail);
@@ -73,11 +86,13 @@ namespace Business_Logic_Layer.Services
                 orderDetail.Quantity--;
             }
             await unitOfWork.SaveChangesAsync();
+            return mapper.Map<OrderModel>(order);
         }
 
         public async Task DeleteAsync(int modelId)
         {
             await unitOfWork.OrderRepository.DeleteByIdAsync(modelId);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
@@ -104,9 +119,12 @@ namespace Business_Logic_Layer.Services
             return mapper.Map<OrderDetailsModel>(orderDetail);
         }
 
-        public async Task UpdateAsync(OrderModel model)
+        public async Task<OrderModel> UpdateAsync(OrderModel model)
         {
+            await orderValidator.ValidateAndThrowAsync(model);
             await Task.Run(() => unitOfWork.OrderRepository.Update(mapper.Map<Order>(model)));
+            await unitOfWork.SaveChangesAsync();
+            return model;
         }
 
         public async Task CheckoutAsync(int id)

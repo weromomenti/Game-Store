@@ -5,6 +5,7 @@ using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace Business_Logic_Layer.Services
         }
         public async Task AddAsync(CommentModel model)
         {
+            await commentValidator.ValidateAndThrowAsync(model);
             await unitOfWork.CommentRepository.AddAsync(mapper.Map<Comment>(model));
             await unitOfWork.SaveChangesAsync();
         }
@@ -52,29 +54,34 @@ namespace Business_Logic_Layer.Services
 
         public async Task<CommentModel> ReplyCommentAsync(int id, CommentModel reply)
         {
+                await commentValidator.ValidateAndThrowAsync(reply);
+
             var comment = await unitOfWork.CommentRepository.GetByIdAsync(id);
             if (comment.Replies == null)
             {
                 comment.Replies = new List<Comment>();
             }
-            comment.Replies.Add(new Comment 
-            { 
-                Game = comment.Game, 
-                GameId = comment.GameId, 
-                Dislikes = 0, 
-                Likes = 0, 
+            comment.Replies.Add(new Comment
+            {
+                Game = comment.Game,
+                GameId = comment.GameId,
+                Dislikes = 0,
+                Likes = 0,
                 PostDate = reply.PostDate,
                 Text = reply.Text,
-                User = await unitOfWork.UserRepository.GetByIdAsync(reply.UserId), 
+                User = await unitOfWork.UserRepository.GetByIdAsync(reply.UserId),
                 UserId = reply.UserId
             });
+            await unitOfWork.SaveChangesAsync();
             return mapper.Map<CommentModel>(comment);
         }
 
-        public async Task UpdateAsync(CommentModel model)
+        public async Task<CommentModel> UpdateAsync(CommentModel model)
         {
+            await commentValidator.ValidateAndThrowAsync(model);
             await Task.Run(() => unitOfWork.CommentRepository.Update(mapper.Map<Comment>(model)));
             await unitOfWork.SaveChangesAsync();
+            return model;
         }
     }
 }

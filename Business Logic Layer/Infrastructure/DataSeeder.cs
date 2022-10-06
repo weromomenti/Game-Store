@@ -34,7 +34,7 @@ namespace Business_Logic_Layer.Infrastructure
                 new PEGIRating { Id = 1, RatingName = "PEGI1" },
                 new PEGIRating { Id = 2, RatingName = "PEGI2" });
             context.Comments.AddRange(
-                new Comment { Id = 1, GameId = 1, Likes = 0, Dislikes = 0, PostDate = DateTime.Today, Text = "Comment1", UserId = 1 },
+                new Comment { Id = 1, GameId = 1, Likes = 0, Dislikes = 0, PostDate = DateTime.Today, Text = "Nice Game", UserId = 1 },
                 new Comment { Id = 2, GameId = 1, Likes = 1, Dislikes = 2, PostDate = DateTime.Today, Text = "Comment2", UserId = 2 });
             context.Users.AddRange(
                 new User { Id = 1, UserName = "User1", Email = "Email1", PasswordHash = "password1", Avatar = "avatar1", PersonId = 1, RoleId = 1 },
@@ -51,6 +51,11 @@ namespace Business_Logic_Layer.Infrastructure
             context.OrderDetails.AddRange(
                 new OrderDetails { Id = 1, GameId = 1, OrderId = 1, Quantity = 1, UnitPrice = 30m },
                 new OrderDetails { Id = 2, GameId = 2, OrderId = 2, Quantity = 3, UnitPrice = 90m });
+
+            context.SaveChanges();
+
+            context.Games.SingleOrDefault(g => g.Id == 1).Comments.Add(context.Comments.SingleOrDefault(c => c.Id == 1));
+
             context.SaveChanges();
         }
     }

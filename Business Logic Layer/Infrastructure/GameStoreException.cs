@@ -8,5 +8,15 @@ namespace Business_Logic_Layer.Infrastructure
 {
     public class GameStoreException : Exception
     {
+        public GameStoreException()
+        {
+
+        }
+        public GameStoreException(string message)
+        {
+            Message = message;
+        }
+
+        public string Message { get; }
     }
 }

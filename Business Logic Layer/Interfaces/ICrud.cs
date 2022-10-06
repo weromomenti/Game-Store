@@ -12,7 +12,7 @@ namespace Business_Logic_Layer.Interfaces
         Task<IEnumerable<TModel>> GetAllAsync();
         Task<TModel> GetByIdAsync(int id);
         Task AddAsync(TModel model);
-        Task UpdateAsync(TModel model);
+        Task<TModel> UpdateAsync(TModel model);
         Task DeleteAsync(int modelId);
     }
 }

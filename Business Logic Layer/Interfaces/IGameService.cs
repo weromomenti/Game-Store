@@ -14,13 +14,13 @@ namespace Business_Logic_Layer.Interfaces
         Task AddGenreToGameAsync(int gameId, int genreId);
         Task AddGenreAsync(GenreModel genreModel);
         Task RemoveGenreAsync(int genreId);
-        Task UpdateGenreAsync(GenreModel genreModel);
+        Task<GenreModel> UpdateGenreAsync(GenreModel genreModel);
         Task AddPEGIRatingAsync(PEGIRatingModel pegiModel);
         Task RemovePEGIRatingAsync(int pegiId);
         Task<IEnumerable<PEGIRatingModel>> GetAllPEGIRatingAsync();
         Task<IEnumerable<GenreModel>> GetAllGenresAsync();
         Task<PEGIRatingModel> GetPEGIRatingByIdAsync(int pegiId);
-        Task UpdatePEGIRatingAsync(PEGIRatingModel pegiModel);
+        Task<PEGIRatingModel> UpdatePEGIRatingAsync(PEGIRatingModel pegiModel);
         Task<GenreModel> GetGenreByIdAsync(int id);
     }
 }

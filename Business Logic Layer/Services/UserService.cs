@@ -4,6 +4,7 @@ using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace Business_Logic_Layer.Services
         }
         public async Task AddAsync(UserModel model)
         {
+            await userValidator.ValidateAndThrowAsync(model);
             await unitOfWork.UserRepository.AddAsync(mapper.Map<User>(model));
             await unitOfWork.SaveChangesAsync();
         }
@@ -55,9 +57,12 @@ namespace Business_Logic_Layer.Services
 
             return mapper.Map<UserModel>(user);
         }
-        public async Task UpdateAsync(UserModel model)
+        public async Task<UserModel> UpdateAsync(UserModel model)
         {
+            await userValidator.ValidateAndThrowAsync(model);
             await Task.Run(() => unitOfWork.UserRepository.Update(mapper.Map<User>(model)));
+            await unitOfWork.SaveChangesAsync();
+            return model;
         }
     }
 }
