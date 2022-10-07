@@ -16,11 +16,12 @@ namespace Game_Store.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly IAuthenticationService authenticationService;
 
-        public UsersController(IUserService userService/*, UserManager<User> userManager*/)
+        public UsersController(IUserService userService, IAuthenticationService authenticationService)
         {
             this.userService = userService;
-            //this.userManager = userManager;
+            this.authenticationService = authenticationService;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetAllUsersAsync()
@@ -34,39 +35,20 @@ namespace Game_Store.Controllers
             var user = await userService.GetByIdAsync(id);
             return new OkObjectResult(user);
         }
-        [HttpPost("signIn")]
-        /*public async Task<ActionResult<UserModel>> SignIn([FromBody] LoginModel loginModel)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = await userService.GetByUserNameAsync(loginModel.UserName);
+            var response = await authenticationService.LoginAsync(request);
+            return Ok(response);
+        }
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            var response = await authenticationService.RegisterAsync(request);
 
-            if (user == null || await userManager.CheckPasswordAsync(user, loginModel.Password))
-            {
-                return Unauthorized();
-            }
-            var authClaims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("string"));
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(authClaims),
-                Expires = DateTime.Now.AddMinutes(20),
-                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return new OkObjectResult(new
-            {
-                token = tokenHandler.WriteToken(token),
-                expires = token.ValidTo
-            });
-        }*/
-        [HttpPost]
+            return Ok(response);
+        }
+        [HttpPut]
         public async Task<ActionResult> UpdateUserAsync(int id, [FromBody] UserModel userModel)
         {
             await userService.UpdateAsync(userModel);

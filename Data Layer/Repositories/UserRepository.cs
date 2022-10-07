@@ -41,11 +41,16 @@ namespace Data_Layer.Repositories
 
         public async Task<IEnumerable<User>> GetAllWithDetailsAync()
         {
-            return await gameStoreDbContext.Users.Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).ToListAsync();
+            return await gameStoreDbContext.Users
+                .Include(u => u.Comments)
+                .Include(u => u.Person)
+                .Include(u => u.Identity)
+                .Include(u => u.Role)
+                .ToListAsync();
         }
         public async Task<User> GetByUserNameAsync(string userName)
         {
-            return await gameStoreDbContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            return await gameStoreDbContext.Users.FirstOrDefaultAsync(u => u.Identity.UserName == userName);
         }
         public async Task<User> GetByIdAsync(int id)
         {
@@ -54,7 +59,12 @@ namespace Data_Layer.Repositories
 
         public async Task<User> GetByIdWithDetailsAsync(int id)
         {
-            return await gameStoreDbContext.Users.Include(u => u.Comments).Include(u => u.Person).Include(u => u.Role).FirstAsync(u => u.Id == id);
+            return await gameStoreDbContext.Users
+                .Include(u => u.Comments)
+                .Include(u => u.Person)
+                .Include(u => u.Role)
+                .Include(u => u.Identity)
+                .FirstAsync(u => u.Id == id);
         }
 
         public async Task<IEnumerable<User>> GetByRoleIdAsync(int roleId)

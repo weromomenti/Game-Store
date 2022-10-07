@@ -27,7 +27,11 @@ namespace Business_Logic_Layer.Infrastructure
             CreateMap<User, UserModel>()
                 .ForMember(um => um.FirstName, x => x.MapFrom(u => u.Person.FirstName))
                 .ForMember(um => um.LastName, x => x.MapFrom(u => u.Person.LastName))
-                .ForMember(um => um.Password, x => x.MapFrom(u => u.PasswordHash))
+                .ForMember(um => um.Email, x => x.MapFrom(u => u.Identity.Email))
+                .ForMember(um => um.UserName, x => x.MapFrom(u => u.Identity.UserName))
+                .ForMember(um => um.PasswordHash, x => x.MapFrom(u => u.Identity.PasswordHash))
+                .ForMember(um => um.RoleId, x => x.MapFrom(u => u.Role.Id))
+                .ForMember(um => um.SecurityStamp, x => x.MapFrom(u => u.Identity.SecurityStamp))
                 .ReverseMap();
             CreateMap<Role, RoleModel>()
                 .ReverseMap();

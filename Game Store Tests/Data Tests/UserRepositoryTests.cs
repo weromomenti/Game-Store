@@ -45,7 +45,7 @@ namespace Game_Store_Tests.Data_Tests
             var userRepository = new UserRepository(context);
 
             var prevCount = context.Users.Count();
-            var newGame = new User { Id = 3, UserName = "NewUserName", Email = "NewEmail", PasswordHash = "NewPassword", Avatar = "NewAvatar" };
+            var newGame = new User { Id = 3, Identity = new UserIdentity { UserName = "NewUserName", Email = "NewEmail", PasswordHash = "NewPassword" }, Avatar = "NewAvatar" };
 
             await userRepository.AddAsync(newGame);
             await context.SaveChangesAsync();
@@ -76,7 +76,7 @@ namespace Game_Store_Tests.Data_Tests
             var newUser = new User
             {
                 Id = 1,
-                UserName = "UpdatedUserName1"
+                Identity = new UserIdentity { UserName = "UpdatedUserName1" }
             };
             userRepository.Update(newUser);
             await context.SaveChangesAsync();
@@ -87,8 +87,8 @@ namespace Game_Store_Tests.Data_Tests
         }
         private static IEnumerable<User> ExpectedUsers => new[]
         {
-            new User { Id = 1, UserName = "User1", Email = "Email1", PasswordHash = "password1", Avatar = "avatar1", PersonId = 1, RoleId = 1 },
-            new User { Id = 2, UserName = "User2", Email = "Email2", PasswordHash = "password2", Avatar = "avatar2", PersonId = 2, RoleId = 2 }
+            new User { Id = 1, Identity = new UserIdentity{ UserName = "User1", Email = "Email1", PasswordHash = "password1" }, Avatar = "avatar1", PersonId = 1, RoleId = 1 },
+            new User { Id = 2, Identity = new UserIdentity{ UserName = "User2", Email = "Email2", PasswordHash = "password2" } , Avatar = "avatar2", PersonId = 2, RoleId = 2 }
         };
     }
 }

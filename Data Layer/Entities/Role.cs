@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Data_Layer.Entities
 {
-    public class Role : BaseEntity
+    public class Role : IdentityRole
     {
-        public string RoleName { get; set; }
     }
 }

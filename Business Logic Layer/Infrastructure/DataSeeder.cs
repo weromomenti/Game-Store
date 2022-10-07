@@ -37,14 +37,11 @@ namespace Business_Logic_Layer.Infrastructure
                 new Comment { Id = 1, GameId = 1, Likes = 0, Dislikes = 0, PostDate = DateTime.Today, Text = "Nice Game", UserId = 1 },
                 new Comment { Id = 2, GameId = 1, Likes = 1, Dislikes = 2, PostDate = DateTime.Today, Text = "Comment2", UserId = 2 });
             context.Users.AddRange(
-                new User { Id = 1, UserName = "User1", Email = "Email1", PasswordHash = "password1", Avatar = "avatar1", PersonId = 1, RoleId = 1 },
-                new User { Id = 2, UserName = "User2", Email = "Email2", PasswordHash = "password2", Avatar = "avatar2", PersonId = 2, RoleId = 2 });
+                new User { Id = 1, Identity = new UserIdentity { Id = "1", Email = "Email1", UserName = "Username1", PasswordHash = "password1" }, Avatar = "avatar1", PersonId = 1, RoleId = 1 },
+                new User { Id = 2, Identity = new UserIdentity { Id = "2", Email = "Email2", UserName = "Username2", PasswordHash = "password2" }, Avatar = "avatar2", PersonId = 2, RoleId = 2 });
             context.Persons.AddRange(
                 new Person { Id = 1, FirstName = "FirstName1", LastName = "lastname1", BirthDate = DateTime.Today },
                 new Person { Id = 2, FirstName = "FirstName2", LastName = "lastname2", BirthDate = DateTime.Today });
-            context.Roles.AddRange(
-                new Role { Id = 1, RoleName = "User" },
-                new Role { Id = 2, RoleName = "Manager" });
             context.Orders.AddRange(
                 new Order { Id = 1, UserId = 1, OrderDate = DateTime.Today },
                 new Order { Id = 2, UserId = 2, OrderDate = DateTime.Today });

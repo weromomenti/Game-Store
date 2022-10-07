@@ -91,7 +91,7 @@ namespace Game_Store_Tests
                 return false;
 
             return x.Id == y.Id
-                && x.UserName == y.UserName;
+                && x.Identity.UserName == y.Identity.UserName;
         }
 
         public int GetHashCode([DisallowNull] User obj)
