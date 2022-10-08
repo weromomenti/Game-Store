@@ -18,8 +18,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddTransient<DataSeeder>();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -83,7 +81,10 @@ builder.Services.AddSingleton(mapper);
 
 builder.Services.AddDbContext<GameStoreDbContext>(options => /*options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=GameStore;Trusted_Connection=True;")*/
                                 options.UseInMemoryDatabase("GameStore"));
+
 builder.Services.AddIdentity<UserIdentity, IdentityRole>()
+    .AddRoles<IdentityRole>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
     .AddEntityFrameworkStores<GameStoreDbContext>()
     .AddDefaultTokenProviders();
 
@@ -106,6 +107,13 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
         };
     });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ElevatedRights", policy =>
+        policy.RequireRole("Admin"));
+    options.AddPolicy("StandardRights", policy =>
+        policy.RequireRole("Admin", "User"));
+});
 
 builder.Services.AddControllers();
 
@@ -116,22 +124,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseHsts(); 
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
-void SeedData(IHost app)
-{
-    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
-
-    using (var scope = scopedFactory.CreateScope())
-    {
-        var service = scope.ServiceProvider.GetService<DataSeeder>();
-        service.Seed();
-    }
-}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -139,7 +136,12 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "GameStore");
 });
 
-SeedData(app);
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    DataSeeder.Seed(services);
+}
 
 app.UseCors("GameStore");
 

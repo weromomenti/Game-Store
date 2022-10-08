@@ -1,5 +1,8 @@
 ﻿using Data_Layer.Data;
 using Data_Layer.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Infrastructure
 {
-    public class DataSeeder
+    public static class DataSeeder
     {
-        private readonly GameStoreDbContext dbContext;
-        public DataSeeder(GameStoreDbContext dbContext)
+        public static void Seed(IServiceProvider services)
         {
-            this.dbContext = dbContext;
-        }
-        public void Seed()
-        {
+            var dbContext = services.GetRequiredService<GameStoreDbContext>();
+
             if (!dbContext.Games.Any())
             {
-                AddData(dbContext);
+                AddData(dbContext, services);
             }
         }
-        public void AddData(GameStoreDbContext context)
+        public static async void AddData(GameStoreDbContext context, IServiceProvider services)
         {
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = services.GetRequiredService<UserManager<UserIdentity>>();
+
             context.Games.AddRangeAsync(
                 new Game { Id = 1, Name = "The Witcher 3: Wild Hunt", Description = "Description", PEGIRatingId = 1, ImageUrl = "https://picfiles.alphacoders.com/198/thumb-198636.jpg", Price = 30m },
                 new Game { Id = 2, Name = "Battlefield V", Description = "Description", PEGIRatingId = 2, ImageUrl = "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg", Price = 40m });
@@ -40,8 +43,11 @@ namespace Business_Logic_Layer.Infrastructure
                 new User { Id = 1, Identity = new UserIdentity { Id = "1", Email = "Email1", UserName = "Username1", PasswordHash = "password1" }, Avatar = "avatar1", PersonId = 1, RoleId = 1 },
                 new User { Id = 2, Identity = new UserIdentity { Id = "2", Email = "Email2", UserName = "Username2", PasswordHash = "password2" }, Avatar = "avatar2", PersonId = 2, RoleId = 2 });
             context.Persons.AddRange(
-                new Person { Id = 1, FirstName = "FirstName1", LastName = "lastname1", BirthDate = DateTime.Today },
-                new Person { Id = 2, FirstName = "FirstName2", LastName = "lastname2", BirthDate = DateTime.Today });
+                new Person { Id = 1, FirstName = "FirstName1", LastName = "LastName1", BirthDate = DateTime.Today },
+                new Person { Id = 2, FirstName = "FirstName2", LastName = "LastName2", BirthDate = DateTime.Today });
+            context.Roles.AddRange(
+                new Role { Id = 1, RoleIdentity = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" } },
+                new Role { Id = 2, RoleIdentity = new IdentityRole { Name = "User", NormalizedName = "USER" } });
             context.Orders.AddRange(
                 new Order { Id = 1, UserId = 1, OrderDate = DateTime.Today },
                 new Order { Id = 2, UserId = 2, OrderDate = DateTime.Today });
@@ -50,6 +56,20 @@ namespace Business_Logic_Layer.Infrastructure
                 new OrderDetails { Id = 2, GameId = 2, OrderId = 2, Quantity = 3, UnitPrice = 90m });
 
             context.SaveChanges();
+
+            await context.Roles.ForEachAsync(async role => await roleManager.CreateAsync(new IdentityRole(role.RoleIdentity.Name)));
+
+            var adminUser = await context.Users.FirstOrDefaultAsync(user => user.Identity.UserName == "AuthenticationAdmin");
+
+            if (adminUser is null)
+            {
+                adminUser = new User
+                {
+                    Identity = new UserIdentity { UserName = "AuthenticationAdmin", Email = "your@email.com" }
+                };
+                await userManager.CreateAsync(adminUser.Identity, "VerySecretPassword!1");
+                await userManager.AddToRoleAsync(adminUser.Identity, context.Roles.FirstOrDefaultAsync(r => r.RoleIdentity.Name == "Admin").Result.RoleIdentity.Name);
+            }
 
             context.Games.SingleOrDefault(g => g.Id == 1).Comments.Add(context.Comments.SingleOrDefault(c => c.Id == 1));
 

@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Data_Layer.Data
 {
-    public class GameStoreDbContext : DbContext
+    public class GameStoreDbContext : IdentityDbContext<UserIdentity>
     {
         public DbSet<Game> Games { get; set; }
         public DbSet<Genre> Genres { get; set; }
@@ -19,6 +20,7 @@ namespace Data_Layer.Data
         public DbSet<UserIdentity> Identities { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<IdentityRole> IdentityRoles { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
 using Data_Layer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -23,6 +24,7 @@ namespace Game_Store.Controllers
             this.userService = userService;
             this.authenticationService = authenticationService;
         }
+        [Authorize(Policy = "ElevatedRights")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetAllUsersAsync()
         {

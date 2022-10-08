@@ -49,6 +49,9 @@ namespace Business_Logic_Layer.Services
                 new (ClaimTypes.Email, user.Email),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
 
             var token = GetToken(authClaims);
 
@@ -72,11 +75,12 @@ namespace Business_Logic_Layer.Services
             User user = new()
             {
                 Person = new Person { FirstName = request.FirstName, LastName = request.LastName },
-                Role = unitOfWork.RoleRepository.GetAllAsync().Result.FirstOrDefault(r => r == 1),
+                Role = unitOfWork.RoleRepository.GetAllAsync().Result.FirstOrDefault(r => r.Id == 2),
                 Identity = identity
             };
 
             var result = await userManager.CreateAsync(identity, request.Password);
+            await userManager.AddToRoleAsync(identity, "User");
             await unitOfWork.UserRepository.AddAsync(user);
             await unitOfWork.SaveChangesAsync();
 

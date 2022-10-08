@@ -128,7 +128,7 @@ namespace Game_Store_Tests
                 return false;
 
             return x.Id == y.Id
-                && x.RoleName == y.RoleName;
+                && x.RoleIdentity.Name == y.RoleIdentity.Name;
         }
 
         public int GetHashCode([DisallowNull] Role obj)
