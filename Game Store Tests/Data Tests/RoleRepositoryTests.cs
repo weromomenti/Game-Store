@@ -46,7 +46,7 @@ namespace Game_Store_Tests.Data_Tests
             var roleRepository = new RoleRepository(context);
 
             var prevCount = context.Roles.Count();
-            var newGame = new Role { Id = 3, RoleIdentity =new IdentityRole("NewRoleName") };
+            var newGame = new Role { Id = 3, IdentityRole = new IdentityRole("NewRoleName") };
 
             await roleRepository.AddAsync(newGame);
             await context.SaveChangesAsync();
@@ -77,7 +77,7 @@ namespace Game_Store_Tests.Data_Tests
             var newRole = new Role
             {
                 Id = 1,
-                RoleIdentity = new IdentityRole("UpdatedRole")
+                IdentityRole = new IdentityRole("UpdatedRole")
             };
             roleRepository.Update(newRole);
             await context.SaveChangesAsync();
@@ -88,8 +88,8 @@ namespace Game_Store_Tests.Data_Tests
         }
         private static IEnumerable<Role> ExpectedRoles => new[]
         {
-            new Role { Id = 1, RoleIdentity = new IdentityRole("User")},
-            new Role { Id = 2, RoleIdentity = new IdentityRole("Manager")}
+            new Role { Id = 1, IdentityRole = new IdentityRole("User")},
+            new Role { Id = 2, IdentityRole = new IdentityRole("Manager")}
         };
     }
 }

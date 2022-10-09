@@ -31,18 +31,21 @@ namespace Game_Store.Controllers
             var users = await userService.GetAllAsync();
             return new OkObjectResult(users);
         }
+        [Authorize(Policy = "ElevatedRights")]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUserByIdAsync(int id)
         {
             var user = await userService.GetByIdAsync(id);
             return new OkObjectResult(user);
         }
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var response = await authenticationService.LoginAsync(request);
             return Ok(response);
         }
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -50,12 +53,14 @@ namespace Game_Store.Controllers
 
             return Ok(response);
         }
+        [Authorize(Policy = "ElevatedRights")]
         [HttpPut]
         public async Task<ActionResult> UpdateUserAsync(int id, [FromBody] UserModel userModel)
         {
             await userService.UpdateAsync(userModel);
             return new OkResult();
         }
+        [Authorize(Policy = "ElevatedRights")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {

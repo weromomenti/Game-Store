@@ -14,5 +14,6 @@ namespace Business_Logic_Layer.Interfaces
         Task<IEnumerable<OrderDetailsModel>> GetAllOrderDetailsAsync();
         Task<OrderDetailsModel> GetOrderDetailsByIdAsync(int id);
         Task CheckoutAsync(int id);
+        Task<decimal> ToPayAsync(int id);
     }
 }

@@ -45,9 +45,11 @@ namespace Business_Logic_Layer.Infrastructure
             context.Persons.AddRange(
                 new Person { Id = 1, FirstName = "FirstName1", LastName = "LastName1", BirthDate = DateTime.Today },
                 new Person { Id = 2, FirstName = "FirstName2", LastName = "LastName2", BirthDate = DateTime.Today });
+            roleManager.CreateAsync(new IdentityRole("Admin"));
+            roleManager.CreateAsync(new IdentityRole("User"));
             context.Roles.AddRange(
-                new Role { Id = 1, RoleIdentity = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" } },
-                new Role { Id = 2, RoleIdentity = new IdentityRole { Name = "User", NormalizedName = "USER" } });
+                new Role { Id = 1, IdentityRole = await roleManager.FindByNameAsync("Admin") },
+                new Role { Id = 2, IdentityRole = await roleManager.FindByNameAsync("User") });
             context.Orders.AddRange(
                 new Order { Id = 1, UserId = 1, OrderDate = DateTime.Today },
                 new Order { Id = 2, UserId = 2, OrderDate = DateTime.Today });
@@ -57,7 +59,7 @@ namespace Business_Logic_Layer.Infrastructure
 
             context.SaveChanges();
 
-            await context.Roles.ForEachAsync(async role => await roleManager.CreateAsync(new IdentityRole(role.RoleIdentity.Name)));
+            await context.Roles.ForEachAsync(async role => await roleManager.CreateAsync(new IdentityRole(role.IdentityRole.Name)));
 
             var adminUser = await context.Users.FirstOrDefaultAsync(user => user.Identity.UserName == "AuthenticationAdmin");
 
@@ -68,7 +70,7 @@ namespace Business_Logic_Layer.Infrastructure
                     Identity = new UserIdentity { UserName = "AuthenticationAdmin", Email = "your@email.com" }
                 };
                 await userManager.CreateAsync(adminUser.Identity, "VerySecretPassword!1");
-                await userManager.AddToRoleAsync(adminUser.Identity, context.Roles.FirstOrDefaultAsync(r => r.RoleIdentity.Name == "Admin").Result.RoleIdentity.Name);
+                await userManager.AddToRoleAsync(adminUser.Identity, context.Roles.FirstOrDefaultAsync(r => r.IdentityRole.Name == "Admin").Result.IdentityRole.Name);
             }
 
             context.Games.SingleOrDefault(g => g.Id == 1).Comments.Add(context.Comments.SingleOrDefault(c => c.Id == 1));

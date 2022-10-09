@@ -6,6 +6,7 @@ using Business_Logic_Layer.Models;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
 using FluentValidation;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,12 +42,11 @@ namespace Business_Logic_Layer.Services
                 throw new GameStoreException();
             }
             var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
-            var orderDetail = order.OrderDetails.SingleOrDefault(od => od?.Game?.Id == gameId);
+            var orderDetail = order.OrderDetails?.SingleOrDefault(od => od.Game.Id == gameId);
 
             if (orderDetail == null)
             {
-                order.OrderDetails.Add(new OrderDetails
-                {
+                await unitOfWork.OrderDetailsRepository.AddAsync(new OrderDetails {
                     Game = game,
                     GameId = game.Id,
                     Order = order,
@@ -132,6 +132,12 @@ namespace Business_Logic_Layer.Services
             var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
             order.IsCheckecOut = true;
             await unitOfWork.SaveChangesAsync();
+        }
+        public async Task<decimal> ToPayAsync(int id)
+        {
+            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            decimal sum = order.OrderDetails.Sum(od => od.UnitPrice * od.Quantity);
+            return sum;
         }
     }
 }

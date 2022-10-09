@@ -65,22 +65,20 @@ namespace Business_Logic_Layer.Services
             {
                 throw new ArgumentException($"User with email {request.Email} or username {request.Username} already exists.");
             }
-
-            UserIdentity identity = new()
-            {
-                Email = request.Email,
-                UserName = request.Username,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
             User user = new()
             {
                 Person = new Person { FirstName = request.FirstName, LastName = request.LastName },
                 Role = unitOfWork.RoleRepository.GetAllAsync().Result.FirstOrDefault(r => r.Id == 2),
-                Identity = identity
+                Identity = new UserIdentity
+                {
+                    Email = request.Email, 
+                    UserName = request.Username, 
+                    SecurityStamp = Guid.NewGuid().ToString()
+                }
             };
 
-            var result = await userManager.CreateAsync(identity, request.Password);
-            await userManager.AddToRoleAsync(identity, "User");
+            var result = await userManager.CreateAsync(user.Identity, request.Password);
+            await userManager.AddToRoleAsync(user.Identity, "User");
             await unitOfWork.UserRepository.AddAsync(user);
             await unitOfWork.SaveChangesAsync();
 

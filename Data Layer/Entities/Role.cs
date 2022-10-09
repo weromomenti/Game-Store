@@ -9,6 +9,7 @@ namespace Data_Layer.Entities
 {
     public class Role : BaseEntity
     {
-        public IdentityRole RoleIdentity { get; set; }
+        public int RoleIdentityId { get; set; }
+        public IdentityRole IdentityRole { get; set; }
     }
 }

@@ -27,5 +27,10 @@ namespace Data_Layer.Data
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>().HasOne<UserIdentity>().WithOne();
+            builder.Entity<Role>().HasOne<RoleIdentity>().WithOne();
+        }
     }
 }
