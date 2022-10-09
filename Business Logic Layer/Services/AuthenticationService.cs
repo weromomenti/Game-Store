@@ -37,7 +37,6 @@ namespace Business_Logic_Layer.Services
             {
                 user = await userManager.FindByEmailAsync(request.Username);
             }
-
             if (user is null || !await userManager.CheckPasswordAsync(user, request.Password))
             {
                 throw new ArgumentException($"Unable to authenticate user {request.Username}");
@@ -68,7 +67,7 @@ namespace Business_Logic_Layer.Services
             User user = new()
             {
                 Person = new Person { FirstName = request.FirstName, LastName = request.LastName },
-                Role = unitOfWork.RoleRepository.GetAllAsync().Result.FirstOrDefault(r => r.Id == 2),
+                Role = unitOfWork.RoleRepository.GetAllAsync().Result.FirstOrDefault(r => r.RoleName == "User"),
                 Identity = new UserIdentity
                 {
                     Email = request.Email, 

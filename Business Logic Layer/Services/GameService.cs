@@ -47,8 +47,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task AddGenreToGameAsync(int gameId, int genreId)
         {
-            var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
-            var genre = await unitOfWork.GenreRepository.GetByIdAsync(genreId);
+            var game = await unitOfWork.GameRepository.GetByIdWithDetailsAsync(gameId);
+            var genre = await unitOfWork.GenreRepository.GetByIdWithDetailsAsync(genreId);
 
             game.Genres.Add(genre);
         }
@@ -67,7 +67,7 @@ namespace Business_Logic_Layer.Services
 
         public async Task<IEnumerable<GameModel>> GetAllAsync()
         {
-            var games = await unitOfWork.GameRepository.GetAllAsync();
+            var games = await unitOfWork.GameRepository.GetAllWithDetailsAsync();
             return mapper.Map<IEnumerable<GameModel>>(games);
         }
 
@@ -78,17 +78,17 @@ namespace Business_Logic_Layer.Services
         }
         public async Task<IEnumerable<GenreModel>> GetAllGenresAsync()
         {
-            var genres = await unitOfWork.GenreRepository.GetAllAsync();
+            var genres = await unitOfWork.GenreRepository.GetAllWithDetailsAsync();
             return mapper.Map<IEnumerable<GenreModel>>(genres);
         }
         public async Task<GenreModel> GetGenreByIdAsync(int id)
         {
-            var genre = await unitOfWork.GenreRepository.GetByIdAsync(id);
+            var genre = await unitOfWork.GenreRepository.GetByIdWithDetailsAsync(id);
             return mapper.Map<GenreModel>(genre);
         }
         public async Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel)
         {
-            var games = await unitOfWork.GameRepository.GetAllAsync();
+            var games = await unitOfWork.GameRepository.GetAllWithDetailsAsync();
 
             if (searchModel?.Title != null && searchModel?.Title != string.Empty)
             {
@@ -103,7 +103,7 @@ namespace Business_Logic_Layer.Services
 
         public async Task<GameModel> GetByIdAsync(int id)
         {
-            var game = await unitOfWork.GameRepository.GetByIdAsync(id);
+            var game = await unitOfWork.GameRepository.GetByIdWithDetailsAsync(id);
             return mapper.Map<GameModel>(game);
         }
 

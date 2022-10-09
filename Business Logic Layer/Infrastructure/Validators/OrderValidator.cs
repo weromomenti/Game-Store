@@ -14,7 +14,6 @@ namespace Business_Logic_Layer.Infrastructure.Validators
         public OrderValidator()
         {
             EnsureInstanceNotNull(nameof(OrderModel));
-            RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.OrderDate).LessThanOrEqualTo(DateTime.Now);
         }
     }

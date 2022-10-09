@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Game_Store.Controllers
 {
+    [Route("/api/[controller]")]
+    [ApiController]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService orderService;
@@ -35,17 +37,38 @@ namespace Game_Store.Controllers
             return new OkObjectResult(order);
         }
         [Authorize(Policy = "ElevatedRights")]
-        [HttpPost("{id}")]
-        public async Task<ActionResult> UpdateOrderAsync(int id, [FromBody] OrderModel orderModel)
+        [HttpGet("orderDetails")]
+        public async Task<ActionResult> GetAllOrderDetailsAsync()
+        {
+            var orderDetails = await orderService.GetAllOrderDetailsAsync();
+            return new OkObjectResult(orderDetails);
+        }
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpGet("orderDetails/{id}")]
+        public async Task<ActionResult> GetOrderDetailsByIdAsync(int id)
+        {
+            var orderDetails = orderService.GetOrderDetailsByIdAsync(id);
+            return new OkObjectResult(orderDetails);
+        }
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpPost]
+        public async Task<ActionResult> UpdateOrderAsync([FromBody] OrderModel orderModel)
         {
             await orderService.UpdateAsync(orderModel);
             return new OkResult();
         }
-        [Authorize(Policy = "StandardRights")]
-        [HttpPut("addGame/{id}/{gameId}")]
-        public async Task<ActionResult> AddGameAsync(int id, int gameId)
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpPost("orderDetails")]
+        public async Task<ActionResult> AddOrderDetailsAsync([FromBody] OrderDetailsModel orderDetails)
         {
-            var order = await orderService.AddGameAsync(id, gameId);
+            await orderService.AddOrderDetailsAsync(orderDetails);
+            return new OkObjectResult(orderDetails);
+        }
+        [Authorize(Policy = "StandardRights")]
+        [HttpPut("addGame/{orderId}/{gameId}")]
+        public async Task<ActionResult> AddGameAsync(int orderId, int gameId)
+        {
+            var order = await orderService.AddGameAsync(orderId, gameId);
             return new OkObjectResult(order);
         }
         [Authorize(Policy = "StandardRights")]
@@ -62,5 +85,13 @@ namespace Game_Store.Controllers
             await orderService.DeleteAsync(id);
             return new OkResult();
         }
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpDelete("orderDetails/{id}")]
+        public async Task<ActionResult> DeleteOrderDetailsAsync(int id)
+        {
+            await orderService.DeleteOrderDetailsAsync(id);
+            return new OkResult();
+        }
+
     }
 }

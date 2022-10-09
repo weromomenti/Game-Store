@@ -42,13 +42,13 @@ namespace Business_Logic_Layer.Services
 
         public async Task<IEnumerable<CommentModel>> GetAllAsync()
         {
-            var comments = await unitOfWork.CommentRepository.GetAllAsync();
+            var comments = await unitOfWork.CommentRepository.GetAllWithDetailsAsync();
             return mapper.Map<IEnumerable<CommentModel>>(comments);
         }
 
         public async Task<CommentModel> GetByIdAsync(int id)
         {
-            var comment = await unitOfWork.CommentRepository.GetByIdAsync(id);
+            var comment = await unitOfWork.CommentRepository.GetByIdWithDetailsAsync(id);
             return mapper.Map<CommentModel>(comment);
         }
 
@@ -56,7 +56,7 @@ namespace Business_Logic_Layer.Services
         {
                 await commentValidator.ValidateAndThrowAsync(reply);
 
-            var comment = await unitOfWork.CommentRepository.GetByIdAsync(id);
+            var comment = await unitOfWork.CommentRepository.GetByIdWithDetailsAsync(id);
             if (comment.Replies == null)
             {
                 comment.Replies = new List<Comment>();
@@ -69,7 +69,7 @@ namespace Business_Logic_Layer.Services
                 Likes = 0,
                 PostDate = reply.PostDate,
                 Text = reply.Text,
-                User = await unitOfWork.UserRepository.GetByIdAsync(reply.UserId),
+                User = await unitOfWork.UserRepository.GetByIdWithDetailsAsync(reply.UserId),
                 UserId = reply.UserId
             });
             await unitOfWork.SaveChangesAsync();

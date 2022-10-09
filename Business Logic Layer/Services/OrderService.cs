@@ -33,20 +33,31 @@ namespace Business_Logic_Layer.Services
             await unitOfWork.OrderRepository.AddAsync(mapper.Map<Order>(model));
             await unitOfWork.SaveChangesAsync();
         }
-
-        public async Task<OrderModel> AddGameAsync(int id, int gameId)
+        public async Task<OrderDetailsModel> AddOrderDetailsAsync(OrderDetailsModel orderDetails)
         {
-            var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
+            await unitOfWork.OrderDetailsRepository.AddAsync(mapper.Map<OrderDetails>(orderDetails));
+            await unitOfWork.SaveChangesAsync();
+            return orderDetails;
+        }
+        public async Task<OrderModel> AddGameAsync(int orderId, int gameId)
+        {
+            var game = await unitOfWork.GameRepository.GetByIdWithDetailsAsync(gameId);
+
             if (game == null)
             {
                 throw new GameStoreException();
             }
-            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
-            var orderDetail = order.OrderDetails?.SingleOrDefault(od => od.Game.Id == gameId);
+            var order = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(orderId);
+            if (order.IsCheckecOut == true)
+            {
+                throw new GameStoreException();
+            }
+            var orderDetail = order.OrderDetails?.SingleOrDefault(od => od.Game?.Id == gameId);
 
             if (orderDetail == null)
             {
-                await unitOfWork.OrderDetailsRepository.AddAsync(new OrderDetails {
+                await unitOfWork.OrderDetailsRepository.AddAsync(new OrderDetails
+                {
                     Game = game,
                     GameId = game.Id,
                     Order = order,
@@ -62,14 +73,18 @@ namespace Business_Logic_Layer.Services
             await unitOfWork.SaveChangesAsync();
             return mapper.Map<OrderModel>(order);
         }
-        public async Task<OrderModel> RemoveGameAsync(int id, int gameId)
+        public async Task<OrderModel> RemoveGameAsync(int orderId, int gameId)
         {
-            var game = await unitOfWork.GameRepository.GetByIdAsync(gameId);
+            var game = await unitOfWork.GameRepository.GetByIdWithDetailsAsync(gameId);
             if (game == null)
             {
                 throw new GameStoreException();
             }
-            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            var order = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(orderId);
+            if (order.IsCheckecOut == true)
+            {
+                throw new GameStoreException();
+            }
             var orderDetail = order.OrderDetails.SingleOrDefault(od => od?.Game?.Id == gameId);
 
             if (orderDetail == null)
@@ -94,28 +109,32 @@ namespace Business_Logic_Layer.Services
             await unitOfWork.OrderRepository.DeleteByIdAsync(modelId);
             await unitOfWork.SaveChangesAsync();
         }
-
+        public async Task DeleteOrderDetailsAsync(int id)
+        {
+            await unitOfWork.OrderDetailsRepository.DeleteByIdAsync(id);
+            await unitOfWork.SaveChangesAsync();
+        }
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
-            var orders = await unitOfWork.OrderRepository.GetAllAsync();
+            var orders = await unitOfWork.OrderRepository.GetAllWithDetailsAsync();
             return mapper.Map<IEnumerable<OrderModel>>(orders);
         }
 
         public async Task<OrderModel> GetByIdAsync(int id)
         {
-            var orderModel = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            var orderModel = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(id);
             return mapper.Map<OrderModel>(orderModel);
         }
 
         public async Task<IEnumerable<OrderDetailsModel>> GetAllOrderDetailsAsync()
         {
-            var orderDetails = await unitOfWork.OrderDetailsRepository.GetAllAsync();
+            var orderDetails = await unitOfWork.OrderDetailsRepository.GetAllWithDetailsAsync();
             return mapper.Map<IEnumerable<OrderDetailsModel>>(orderDetails);
         }
 
         public async Task<OrderDetailsModel> GetOrderDetailsByIdAsync(int id)
         {
-            var orderDetail = await unitOfWork.OrderDetailsRepository.GetByIdAsync(id);
+            var orderDetail = await unitOfWork.OrderDetailsRepository.GetByIdWithDetailsAsync(id);
             return mapper.Map<OrderDetailsModel>(orderDetail);
         }
 
@@ -129,13 +148,13 @@ namespace Business_Logic_Layer.Services
 
         public async Task CheckoutAsync(int id)
         {
-            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            var order = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(id);
             order.IsCheckecOut = true;
             await unitOfWork.SaveChangesAsync();
         }
         public async Task<decimal> ToPayAsync(int id)
         {
-            var order = await unitOfWork.OrderRepository.GetByIdAsync(id);
+            var order = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(id);
             decimal sum = order.OrderDetails.Sum(od => od.UnitPrice * od.Quantity);
             return sum;
         }

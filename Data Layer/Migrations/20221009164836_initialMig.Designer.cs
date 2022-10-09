@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Layer.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20221009121929_newMig")]
-    partial class newMig
+    [Migration("20221009164836_initialMig")]
+    partial class initialMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,6 +96,26 @@ namespace Data_Layer.Migrations
                     b.HasIndex("PEGIRatingId");
 
                     b.ToTable("Games");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Description",
+                            ImageUrl = "https://picfiles.alphacoders.com/198/thumb-198636.jpg",
+                            Name = "The Witcher 3: Wild Hunt",
+                            PEGIRatingId = 1,
+                            Price = 30m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Description",
+                            ImageUrl = "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg",
+                            Name = "Battlefield V",
+                            PEGIRatingId = 2,
+                            Price = 40m
+                        });
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.Genre", b =>
@@ -113,6 +133,18 @@ namespace Data_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GenreName = "Genre1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GenreName = "Genre2"
+                        });
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.Order", b =>
@@ -176,13 +208,25 @@ namespace Data_Layer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("RatingName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("PEGIRatings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "PEGI1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "PEGI2"
+                        });
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.Person", b =>
@@ -217,18 +261,25 @@ namespace Data_Layer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("RoleIdentityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleIdentityId1")
+                    b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleIdentityId1");
-
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RoleName = "User"
+                        });
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.User", b =>
@@ -242,11 +293,7 @@ namespace Data_Layer.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdentityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("IdentityId1")
-                        .IsRequired()
+                    b.Property<string>("IdentityId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PersonId")
@@ -257,78 +304,13 @@ namespace Data_Layer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityId1");
+                    b.HasIndex("IdentityId");
 
                     b.HasIndex("PersonId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Data_Layer.Entities.UserIdentity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("GameGenre", b =>
@@ -396,6 +378,77 @@ namespace Data_Layer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -479,6 +532,28 @@ namespace Data_Layer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Data_Layer.Entities.UserIdentity", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("UserIdentity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "cb32ed15-38d4-41c1-ac47-3f5ecf6aa6f7",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8921b7ed-04fa-4092-8ce0-593a29d2cc98",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "Admin",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "530b4a6b-4e5b-4262-8be6-7668f38b6d70",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
+                });
+
             modelBuilder.Entity("Data_Layer.Entities.Comment", b =>
                 {
                     b.HasOne("Data_Layer.Entities.Comment", null)
@@ -543,24 +618,11 @@ namespace Data_Layer.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Data_Layer.Entities.Role", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "RoleIdentity")
-                        .WithMany()
-                        .HasForeignKey("RoleIdentityId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RoleIdentity");
-                });
-
             modelBuilder.Entity("Data_Layer.Entities.User", b =>
                 {
                     b.HasOne("Data_Layer.Entities.UserIdentity", "Identity")
                         .WithMany()
-                        .HasForeignKey("IdentityId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdentityId");
 
                     b.HasOne("Data_Layer.Entities.Person", "Person")
                         .WithMany()
@@ -607,7 +669,7 @@ namespace Data_Layer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Data_Layer.Entities.UserIdentity", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -616,7 +678,7 @@ namespace Data_Layer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Data_Layer.Entities.UserIdentity", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -631,7 +693,7 @@ namespace Data_Layer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data_Layer.Entities.UserIdentity", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -640,7 +702,7 @@ namespace Data_Layer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Data_Layer.Entities.UserIdentity", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

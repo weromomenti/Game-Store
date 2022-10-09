@@ -135,12 +135,10 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "GameStore");
 });
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
 
-    DataSeeder.Seed(services);
-}
+DataSeeder.Seed(services);
 
 app.UseCors("GameStore");
 

@@ -8,6 +8,6 @@ namespace Data_Layer.Entities
 {
     public class PEGIRating : BaseEntity
     {
-        public string RatingName { get; set; }
+        public string Name { get; set; }
     }
 }

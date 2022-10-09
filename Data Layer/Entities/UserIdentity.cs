@@ -9,6 +9,5 @@ namespace Data_Layer.Entities
 {
     public class UserIdentity : IdentityUser
     {
-
     }
 }

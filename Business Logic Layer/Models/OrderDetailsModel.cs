@@ -10,6 +10,7 @@ namespace Business_Logic_Layer.Models
     {
         public int Id { get; set; }
         public int GameId { get; set; }
+        public int OrderId { get; set; }
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
     }
