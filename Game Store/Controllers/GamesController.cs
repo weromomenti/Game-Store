@@ -76,6 +76,20 @@ namespace Game_Store.Controllers
             return new OkResult();
         }
         [Authorize(Policy = "ElevatedRights")]
+        [HttpPut("addGenreToGame/{gameId}/{genreId}")]
+        public async Task<ActionResult> AddGenreToGameAsync(int gameId, int genreId)
+        {
+            await gameService.AddGenreToGameAsync(gameId, genreId);
+            return new OkResult();
+        }
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpPut("removeGenreFromGame/{gameId}/{genreId}")]
+        public async Task<ActionResult> RemoveGenreFromGameAsync(int gameId, int genreId)
+        {
+            await gameService.RemoveGenreFromGameAsync(gameId, genreId);
+            return new OkResult();
+        }
+        [Authorize(Policy = "ElevatedRights")]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGameAsync(int id, [FromBody] GameModel gameModel)
         {

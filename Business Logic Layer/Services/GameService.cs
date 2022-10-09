@@ -50,13 +50,32 @@ namespace Business_Logic_Layer.Services
             var game = await unitOfWork.GameRepository.GetByIdWithDetailsAsync(gameId);
             var genre = await unitOfWork.GenreRepository.GetByIdWithDetailsAsync(genreId);
 
-            game.Genres.Add(genre);
-        }
+            if (game.Genres.Contains(genre))
+            {
+                return;
+            }
 
+            game.Genres.Add(genre);
+            await unitOfWork.SaveChangesAsync();
+        }
+        public async Task RemoveGenreFromGameAsync(int gameId, int genreId)
+        {
+            var game = await unitOfWork.GameRepository.GetByIdWithDetailsAsync(gameId);
+            var genre = await unitOfWork.GenreRepository.GetByIdWithDetailsAsync(genreId);
+
+            if (!game.Genres.Contains(genre))
+            {
+                return;
+            }
+
+            game.Genres.Remove(genre);await unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
+        }
         public async Task AddPEGIRatingAsync(PEGIRatingModel pegiModel)
         {
             await pEGIRatingValidator.ValidateAndThrowAsync(pegiModel);
             await unitOfWork.PEGIRatingRepository.AddAsync(mapper.Map<PEGIRating>(pegiModel));
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int modelId)
@@ -92,7 +111,7 @@ namespace Business_Logic_Layer.Services
 
             if (searchModel?.Title != null && searchModel?.Title != string.Empty)
             {
-                games = games.Where(g => g.Name == searchModel?.Title);
+                games = games.Where(g => g.Name.ToLower().Contains(searchModel.Title.ToLower()));
             }
             if (searchModel?.Genre != null && searchModel.Genre.Length > 0)
             {

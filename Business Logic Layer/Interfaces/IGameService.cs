@@ -12,6 +12,7 @@ namespace Business_Logic_Layer.Interfaces
     {
         Task<IEnumerable<GameModel>> GetByFilterAsync(SearchModel searchModel);
         Task AddGenreToGameAsync(int gameId, int genreId);
+        Task RemoveGenreFromGameAsync(int gameId, int genreId);
         Task AddGenreAsync(GenreModel genreModel);
         Task RemoveGenreAsync(int genreId);
         Task<GenreModel> UpdateGenreAsync(GenreModel genreModel);

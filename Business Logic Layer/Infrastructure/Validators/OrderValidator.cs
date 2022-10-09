@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Infrastructure.Validators
 {
-    internal class OrderValidator : AbstractValidator<OrderModel>
+    public class OrderValidator : AbstractValidator<OrderModel>
     {
         public OrderValidator()
         {
