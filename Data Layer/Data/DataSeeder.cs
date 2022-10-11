@@ -16,6 +16,7 @@ namespace Business_Logic_Layer.Infrastructure
         public static void Seed(IServiceProvider services)
         {
             var dbContext = services.GetRequiredService<GameStoreDbContext>();
+            dbContext.Database.Migrate();
 
             if (!dbContext.UserIdentities.Any())
             {

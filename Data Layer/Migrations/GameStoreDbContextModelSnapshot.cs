@@ -60,7 +60,7 @@ namespace Data_Layer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.Game", b =>
@@ -93,7 +93,7 @@ namespace Data_Layer.Migrations
 
                     b.HasIndex("PEGIRatingId");
 
-                    b.ToTable("Games");
+                    b.ToTable("Games", (string)null);
 
                     b.HasData(
                         new
@@ -130,7 +130,7 @@ namespace Data_Layer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
 
                     b.HasData(
                         new
@@ -166,7 +166,7 @@ namespace Data_Layer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.OrderDetails", b =>
@@ -195,7 +195,7 @@ namespace Data_Layer.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.PEGIRating", b =>
@@ -212,7 +212,7 @@ namespace Data_Layer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PEGIRatings");
+                    b.ToTable("PEGIRatings", (string)null);
 
                     b.HasData(
                         new
@@ -248,7 +248,7 @@ namespace Data_Layer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Persons", (string)null);
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.Role", b =>
@@ -265,7 +265,7 @@ namespace Data_Layer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -308,7 +308,7 @@ namespace Data_Layer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("GameGenre", b =>
@@ -323,7 +323,7 @@ namespace Data_Layer.Migrations
 
                     b.HasIndex("GenresId");
 
-                    b.ToTable("GameGenre");
+                    b.ToTable("GameGenre", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

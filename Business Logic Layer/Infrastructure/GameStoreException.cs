@@ -17,6 +17,6 @@ namespace Business_Logic_Layer.Infrastructure
             Message = message;
         }
 
-        public string Message { get; }
+        public override string Message { get; }
     }
 }

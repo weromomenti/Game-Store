@@ -13,7 +13,7 @@ namespace Data_Layer.Entities
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string ImageUrl { get; set; }
-        public PEGIRating? PEGIRating { get; set; }
+        public PEGIRating PEGIRating { get; set; }
         public ICollection<Genre> Genres { get; set; }
         public ICollection<Comment> Comments { get; set; }
     }

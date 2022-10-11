@@ -23,7 +23,7 @@ namespace Game_Store.Controllers
             var comments = await commentService.GetAllAsync();
             return new OkObjectResult(comments);
         }
-        [Authorize(Policy = "ElevatedRights")]
+        [Authorize(Policy = "StandardRights")]
         [HttpGet("{id}")]
         public async Task<ActionResult<CommentModel>> GetCommentByIdAsync(int id)
         {

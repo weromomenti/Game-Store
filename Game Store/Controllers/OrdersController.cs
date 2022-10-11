@@ -47,7 +47,7 @@ namespace Game_Store.Controllers
         [HttpGet("orderDetails/{id}")]
         public async Task<ActionResult> GetOrderDetailsByIdAsync(int id)
         {
-            var orderDetails = orderService.GetOrderDetailsByIdAsync(id);
+            var orderDetails = await orderService.GetOrderDetailsByIdAsync(id);
             return new OkObjectResult(orderDetails);
         }
         [Authorize(Policy = "ElevatedRights")]

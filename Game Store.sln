@@ -5,9 +5,9 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game Store", "Game Store\Game Store.csproj", "{03C21C5D-13F3-4DD0-8694-5E1C4D3CF183}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data Layer", "Data Layer\Data Layer.csproj", "{34387C88-3FA8-4603-A182-53F7BCDB99E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data Layer\Data.csproj", "{34387C88-3FA8-4603-A182-53F7BCDB99E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business Logic Layer", "Business Logic Layer\Business Logic Layer.csproj", "{DF620A57-455E-42A1-A30C-F07E278A0A05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business Logic", "Business Logic Layer\Business Logic.csproj", "{DF620A57-455E-42A1-A30C-F07E278A0A05}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game Store Tests", "Game Store Tests\Game Store Tests.csproj", "{4E278B8E-9A6C-44FC-B9F7-862637731A0C}"
 EndProject

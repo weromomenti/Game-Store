@@ -16,10 +16,10 @@ namespace Data_Layer.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<PEGIRating> PEGIRatings { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<User> Users { get; set; }
+        public new DbSet<User> Users { get; set; }
         public DbSet<UserIdentity> UserIdentities { get; set; }
         public DbSet<Person> Persons { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public new DbSet<Role> Roles { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
 
@@ -28,14 +28,23 @@ namespace Data_Layer.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Comment>().OwnsMany(c => c.Replies);
+            builder.Entity<Game>().OwnsMany(g => g.Comments);
+            builder.Entity<Genre>().OwnsMany(g => g.SubGenres);
+            builder.Entity<User>().OwnsOne(u => u.Person);
+            builder.Entity<User>().OwnsOne(u => u.Role);
+            builder.Entity<User>().OwnsOne(u => u.Identity);
 
-            base.OnModelCreating(builder);
+            AddData(builder);
+        }
+        private static void AddData(ModelBuilder builder)
+        {
             builder.Entity<Genre>().HasData(
                 new Genre { Id = 1, GenreName = "Genre1" },
                 new Genre { Id = 2, GenreName = "Genre2" });
             builder.Entity<Game>().HasData(
                 new Game { Id = 1, Name = "The Witcher 3: Wild Hunt", Description = "Description", PEGIRatingId = 1, ImageUrl = "https://picfiles.alphacoders.com/198/thumb-198636.jpg", Price = 30m },
-                new Game { Id = 2, Name = "Battlefield V", Description = "Description", PEGIRatingId = 2, ImageUrl = "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg", Price = 40m });            
+                new Game { Id = 2, Name = "Battlefield V", Description = "Description", PEGIRatingId = 2, ImageUrl = "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg", Price = 40m });
             builder.Entity<PEGIRating>().HasData(
                 new PEGIRating { Id = 1, Name = "PEGI1" },
                 new PEGIRating { Id = 2, Name = "PEGI2" });
