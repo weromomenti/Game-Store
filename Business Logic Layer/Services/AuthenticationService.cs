@@ -75,11 +75,11 @@ namespace Business_Logic_Layer.Services
                     SecurityStamp = Guid.NewGuid().ToString()
                 }
             };
-
+            await unitOfWork.UserRepository.AddAsync(user);
             var result = await userManager.CreateAsync(user.Identity, request.Password);
             await userManager.AddToRoleAsync(user.Identity, "User");
-            await unitOfWork.UserRepository.AddAsync(user);
             await unitOfWork.SaveChangesAsync();
+
 
             if (!result.Succeeded)
             {

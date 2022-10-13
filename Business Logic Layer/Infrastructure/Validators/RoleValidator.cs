@@ -13,7 +13,6 @@ namespace Business_Logic_Layer.Infrastructure.Validators
         public RoleValidator()
         {
             EnsureInstanceNotNull(nameof(RoleModel));
-            RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.RoleName).NotEmpty();
         }
     }

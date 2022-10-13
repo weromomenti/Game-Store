@@ -23,9 +23,9 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.Comments.AddAsync(entity);
         }
 
-        public void Delete(Comment entity)
+        public async Task Delete(Comment entity)
         {
-            gameStoreDbContext.Comments.Remove(entity);
+            await Task.Run(() => gameStoreDbContext.Comments.Remove(entity));
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -64,9 +64,9 @@ namespace Data_Layer.Repositories
             return await gameStoreDbContext.Comments.Where(c => c.UserId == userId).ToListAsync();
         }
 
-        public void Update(Comment entity)
+        public async Task Update(Comment entity)
         {
-            gameStoreDbContext.Comments.Update(entity);
+            await Task.Run (() => gameStoreDbContext.Comments.Update(entity));
         }
     }
 }

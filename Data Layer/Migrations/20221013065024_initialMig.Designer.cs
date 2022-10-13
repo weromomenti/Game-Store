@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Layer.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20221009164836_initialMig")]
+    [Migration("20221013065024_initialMig")]
     partial class initialMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,11 +126,16 @@ namespace Data_Layer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("GenreId")
+                        .HasColumnType("int");
+
                     b.Property<string>("GenreName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("Genres");
 
@@ -138,12 +143,42 @@ namespace Data_Layer.Migrations
                         new
                         {
                             Id = 1,
-                            GenreName = "Genre1"
+                            GenreName = "Strategy"
                         },
                         new
                         {
                             Id = 2,
-                            GenreName = "Genre2"
+                            GenreName = "RPG"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            GenreName = "Sport"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            GenreName = "Racing"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            GenreName = "Action"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            GenreName = "Adventure"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            GenreName = "Puzzle & Skill"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            GenreName = "Other"
                         });
                 });
 
@@ -155,7 +190,7 @@ namespace Data_Layer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("IsCheckecOut")
+                    b.Property<bool>("IsCheckedOut")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("OrderDate")
@@ -220,12 +255,27 @@ namespace Data_Layer.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "PEGI1"
+                            Name = "PEGI3"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "PEGI2"
+                            Name = "PEGI7"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "PEGI12"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "PEGI16"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "PEGI18"
                         });
                 });
 
@@ -537,21 +587,6 @@ namespace Data_Layer.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("UserIdentity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "cb32ed15-38d4-41c1-ac47-3f5ecf6aa6f7",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "8921b7ed-04fa-4092-8ce0-593a29d2cc98",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PasswordHash = "Admin",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "530b4a6b-4e5b-4262-8be6-7668f38b6d70",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Data_Layer.Entities.Comment", b =>
@@ -588,10 +623,17 @@ namespace Data_Layer.Migrations
                     b.Navigation("PEGIRating");
                 });
 
+            modelBuilder.Entity("Data_Layer.Entities.Genre", b =>
+                {
+                    b.HasOne("Data_Layer.Entities.Genre", null)
+                        .WithMany("SubGenres")
+                        .HasForeignKey("GenreId");
+                });
+
             modelBuilder.Entity("Data_Layer.Entities.Order", b =>
                 {
                     b.HasOne("Data_Layer.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -719,6 +761,11 @@ namespace Data_Layer.Migrations
                     b.Navigation("Comments");
                 });
 
+            modelBuilder.Entity("Data_Layer.Entities.Genre", b =>
+                {
+                    b.Navigation("SubGenres");
+                });
+
             modelBuilder.Entity("Data_Layer.Entities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -727,6 +774,8 @@ namespace Data_Layer.Migrations
             modelBuilder.Entity("Data_Layer.Entities.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

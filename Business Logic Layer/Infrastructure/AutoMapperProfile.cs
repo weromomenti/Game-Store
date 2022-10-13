@@ -18,6 +18,7 @@ namespace Business_Logic_Layer.Infrastructure
                 .ForMember(gm => gm.CommentIds, x => x.MapFrom(g => g.Comments.Select(c => c.Id)))
                 .ReverseMap();
             CreateMap<Genre, GenreModel>()
+                .ForMember(gm => gm.SubgenreIds, x => x.MapFrom(g => g.SubGenres.Select(g => g.Id)))
                 .ReverseMap();
             CreateMap<PEGIRating, PEGIRatingModel>()
                 .ReverseMap();
@@ -32,6 +33,7 @@ namespace Business_Logic_Layer.Infrastructure
                 .ForMember(um => um.PasswordHash, x => x.MapFrom(u => u.Identity.PasswordHash))
                 .ForMember(um => um.RoleId, x => x.MapFrom(u => u.Role.Id))
                 .ForMember(um => um.Role, x => x.MapFrom(u => u.Role.RoleName))
+                .ForMember(um => um.OrderModelIds, x => x.MapFrom(u => u.Orders.Select(o => o.Id)))
                 .ReverseMap();
             CreateMap<Role, RoleModel>()
                 .ReverseMap();

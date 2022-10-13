@@ -16,9 +16,8 @@ namespace Business_Logic_Layer.Infrastructure
         public static void Seed(IServiceProvider services)
         {
             var dbContext = services.GetRequiredService<GameStoreDbContext>();
-            dbContext.Database.Migrate();
 
-            if (!dbContext.UserIdentities.Any())
+            if (dbContext.Database.EnsureCreated())
             {
                 AddData(dbContext, services);
             }
@@ -40,7 +39,6 @@ namespace Business_Logic_Layer.Infrastructure
                 await userManager.CreateAsync(Identity, "Admin:123");
                 await userManager.AddToRoleAsync(Identity, "Admin");
             }
-            context.SaveChanges();
         }
     }
 }

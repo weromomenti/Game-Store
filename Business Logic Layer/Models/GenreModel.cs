@@ -10,5 +10,6 @@ namespace Business_Logic_Layer.Models
     {
         public int Id { get; set; }
         public string GenreName { get; set; }
+        public ICollection<int> SubgenreIds { get; set; }
     }
 }

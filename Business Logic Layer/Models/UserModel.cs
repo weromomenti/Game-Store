@@ -11,7 +11,6 @@ namespace Business_Logic_Layer.Models
     {
         public int Id { get; set; }
         public int RoleId { get; set; }
-        public int CartId { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -19,6 +18,7 @@ namespace Business_Logic_Layer.Models
         public string Email { get; set; }
         public string Role { get; set; }
         public string Avatar { get; set; }
+        public ICollection<int> OrderModelIds { get; set; }
 
     }
 }

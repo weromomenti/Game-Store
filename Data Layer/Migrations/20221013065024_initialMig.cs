@@ -55,11 +55,17 @@ namespace Data_Layer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GenreName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    GenreName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GenreId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genres", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Genres_Genres_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genres",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -333,7 +339,7 @@ namespace Data_Layer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsCheckecOut = table.Column<bool>(type: "bit", nullable: false)
+                    IsCheckedOut = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -375,17 +381,18 @@ namespace Data_Layer.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "cb32ed15-38d4-41c1-ac47-3f5ecf6aa6f7", 0, "8921b7ed-04fa-4092-8ce0-593a29d2cc98", "UserIdentity", null, false, false, null, null, null, "Admin", null, false, "530b4a6b-4e5b-4262-8be6-7668f38b6d70", false, "Admin" });
-
-            migrationBuilder.InsertData(
                 table: "Genres",
-                columns: new[] { "Id", "GenreName" },
+                columns: new[] { "Id", "GenreId", "GenreName" },
                 values: new object[,]
                 {
-                    { 1, "Genre1" },
-                    { 2, "Genre2" }
+                    { 1, null, "Strategy" },
+                    { 2, null, "RPG" },
+                    { 3, null, "Sport" },
+                    { 4, null, "Racing" },
+                    { 5, null, "Action" },
+                    { 6, null, "Adventure" },
+                    { 7, null, "Puzzle & Skill" },
+                    { 8, null, "Other" }
                 });
 
             migrationBuilder.InsertData(
@@ -393,8 +400,11 @@ namespace Data_Layer.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "PEGI1" },
-                    { 2, "PEGI2" }
+                    { 1, "PEGI3" },
+                    { 2, "PEGI7" },
+                    { 3, "PEGI12" },
+                    { 4, "PEGI16" },
+                    { 5, "PEGI18" }
                 });
 
             migrationBuilder.InsertData(
@@ -479,6 +489,11 @@ namespace Data_Layer.Migrations
                 name: "IX_Games_PEGIRatingId",
                 table: "Games",
                 column: "PEGIRatingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Genres_GenreId",
+                table: "Genres",
+                column: "GenreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_GameId",

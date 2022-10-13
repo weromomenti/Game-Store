@@ -14,7 +14,6 @@ namespace Business_Logic_Layer.Infrastructure.Validators
         public OrderDetailsValidator()
         {
             EnsureInstanceNotNull(nameof(OrderDetailsValidator));
-            RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.Quantity).GreaterThanOrEqualTo(1);
             RuleFor(x => x.UnitPrice).GreaterThanOrEqualTo(0);
         }

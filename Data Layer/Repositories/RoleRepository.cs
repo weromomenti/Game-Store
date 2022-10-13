@@ -23,9 +23,9 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.Roles.AddAsync(entity);
         }
 
-        public void Delete(Role entity)
+        public async Task Delete(Role entity)
         {
-            gameStoreDbContext.Roles.Remove(entity);
+            await Task.Run(() => gameStoreDbContext.Roles.Remove(entity));
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -44,9 +44,9 @@ namespace Data_Layer.Repositories
             return await gameStoreDbContext.Roles.FindAsync(id);
         }
 
-        public void Update(Role entity)
+        public async Task Update(Role entity)
         {
-            gameStoreDbContext.Roles.Update(entity);
+            await Task.Run(() => gameStoreDbContext.Roles.Update(entity));
         }
     }
 }

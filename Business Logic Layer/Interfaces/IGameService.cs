@@ -14,6 +14,7 @@ namespace Business_Logic_Layer.Interfaces
         Task AddGenreToGameAsync(int gameId, int genreId);
         Task RemoveGenreFromGameAsync(int gameId, int genreId);
         Task AddGenreAsync(GenreModel genreModel);
+        Task AddSubgenreAsync(int genreId, GenreModel subGenre);
         Task RemoveGenreAsync(int genreId);
         Task<GenreModel> UpdateGenreAsync(GenreModel genreModel);
         Task AddPEGIRatingAsync(PEGIRatingModel pegiModel);

@@ -23,9 +23,9 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.PEGIRatings.AddAsync(entity);
         }
 
-        public void Delete(PEGIRating entity)
+        public async Task Delete(PEGIRating entity)
         {
-            gameStoreDbContext.PEGIRatings.Remove(entity);
+            await Task.Run(() => gameStoreDbContext.PEGIRatings.Remove(entity));
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -44,9 +44,9 @@ namespace Data_Layer.Repositories
             return await gameStoreDbContext.PEGIRatings.FindAsync(id);
         }
 
-        public void Update(PEGIRating entity)
+        public async Task Update(PEGIRating entity)
         {
-            gameStoreDbContext.PEGIRatings.Update(entity);
+            await Task.Run(() => gameStoreDbContext.PEGIRatings.Update(entity));
         }
     }
 }

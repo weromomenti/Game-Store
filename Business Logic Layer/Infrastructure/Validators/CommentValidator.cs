@@ -13,7 +13,6 @@ namespace Business_Logic_Layer.Infrastructure.Validators
         public CommentValidator()
         {
             EnsureInstanceNotNull(nameof(CommentModel));
-            RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.GameId).NotEmpty();
             RuleFor(x => x.Text).NotEmpty();

@@ -50,8 +50,15 @@ namespace Game_Store.Controllers
             var orderDetails = await orderService.GetOrderDetailsByIdAsync(id);
             return new OkObjectResult(orderDetails);
         }
-        [Authorize(Policy = "ElevatedRights")]
+        [Authorize(Policy = "StandardRights")]
         [HttpPost]
+        public async Task<ActionResult> AddOrderAsync([FromBody] OrderModel order)
+        {
+            await orderService.AddAsync(order);
+            return new OkResult();
+        }
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpPut]
         public async Task<ActionResult> UpdateOrderAsync([FromBody] OrderModel orderModel)
         {
             await orderService.UpdateAsync(orderModel);
@@ -92,6 +99,12 @@ namespace Game_Store.Controllers
             await orderService.DeleteOrderDetailsAsync(id);
             return new OkResult();
         }
-
+        [Authorize(Policy = "StandardRights")]
+        [HttpPut("checkout/{orderId}")]
+        public async Task<ActionResult<OrderModel>> CheckoutAsync(int orderId)
+        {
+            var order = await orderService.CheckoutAsync(orderId);
+            return new OkObjectResult(order);
+        }
     }
 }

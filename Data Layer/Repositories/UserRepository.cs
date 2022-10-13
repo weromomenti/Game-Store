@@ -23,9 +23,9 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.Users.AddAsync(entity);
         }
 
-        public void Delete(User entity)
+        public async Task Delete(User entity)
         {
-            gameStoreDbContext.Users.Remove(entity);
+            await Task.Run(() => gameStoreDbContext.Users.Remove(entity));
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -46,6 +46,7 @@ namespace Data_Layer.Repositories
                 .Include(u => u.Person)
                 .Include(u => u.Identity)
                 .Include(u => u.Role)
+                .Include(u => u.Orders)
                 .ToListAsync();
         }
         public async Task<User> GetByUserNameAsync(string userName)
@@ -64,6 +65,7 @@ namespace Data_Layer.Repositories
                 .Include(u => u.Person)
                 .Include(u => u.Role)
                 .Include(u => u.Identity)
+                .Include(u => u.Orders)
                 .FirstAsync(u => u.Id == id);
         }
 
@@ -72,9 +74,9 @@ namespace Data_Layer.Repositories
             return await gameStoreDbContext.Users.Where(u => u.RoleId == roleId).ToListAsync();
         }
 
-        public void Update(User entity)
+        public async Task Update(User entity)
         {
-            gameStoreDbContext.Update(entity);
+            await Task.Run(() => gameStoreDbContext.Update(entity));
         }
     }
 }

@@ -24,9 +24,9 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.OrderDetails.AddAsync(entity);
         }
 
-        public void Delete(OrderDetails entity)
+        public async Task Delete(OrderDetails entity)
         {
-            gameStoreDbContext.OrderDetails.Remove(entity);
+            await Task.Run(() => gameStoreDbContext.OrderDetails.Remove(entity));
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -60,9 +60,9 @@ namespace Data_Layer.Repositories
             return await gameStoreDbContext.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
         }
 
-        public void Update(OrderDetails entity)
+        public async Task Update(OrderDetails entity)
         {
-            gameStoreDbContext.OrderDetails.Update(entity);
+            await Task.Run(() => gameStoreDbContext.OrderDetails.Update(entity));
         }
     }
 }

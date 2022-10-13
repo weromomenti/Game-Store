@@ -23,9 +23,9 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.Persons.AddAsync(entity);
         }
 
-        public void Delete(Person entity)
+        public async Task Delete(Person entity)
         {
-            gameStoreDbContext.Persons.Remove(entity);
+            await Task.Run(() => gameStoreDbContext.Persons.Remove(entity));
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -44,9 +44,9 @@ namespace Data_Layer.Repositories
             return await gameStoreDbContext.Persons.FindAsync(id);
         }
 
-        public void Update(Person entity)
+        public async Task Update(Person entity)
         {
-            gameStoreDbContext.Persons.Update(entity);
+            await Task.Run (() => gameStoreDbContext.Persons.Update(entity));
         }
     }
 }

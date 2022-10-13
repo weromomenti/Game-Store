@@ -13,7 +13,6 @@ namespace Business_Logic_Layer.Infrastructure.Validators
         public PEGIRatingValidator()
         {
             EnsureInstanceNotNull(nameof(PEGIRatingModel));
-            RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.RatingName).NotEmpty();
         }
     }

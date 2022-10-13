@@ -69,6 +69,13 @@ namespace Game_Store.Controllers
             return new OkResult();
         }
         [Authorize(Policy = "ElevatedRights")]
+        [HttpPost("genres/{genreId}")]
+        public async Task<ActionResult> AddSubgenreAsync(int genreId, [FromBody] GenreModel subGenre)
+        {
+            await gameService.AddSubgenreAsync(genreId, subGenre);
+            return new OkResult();
+        }
+        [Authorize(Policy = "ElevatedRights")]
         [HttpPost("pegi")]
         public async Task<ActionResult> AddPEGIAsync([FromBody] PEGIRatingModel pegi)
         {

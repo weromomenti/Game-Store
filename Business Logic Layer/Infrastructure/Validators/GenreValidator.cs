@@ -13,7 +13,6 @@ namespace Business_Logic_Layer.Infrastructure.Validators
         public GenreValidator()
         {
             EnsureInstanceNotNull(nameof(GenreModel));
-            RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.GenreName).NotEmpty();
         }
     }

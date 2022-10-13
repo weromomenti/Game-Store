@@ -23,9 +23,9 @@ namespace Data_Layer.Repositories
             await gameStoreDbContext.AddAsync(entity);
         }
 
-        public void Delete(Genre entity)
+        public async Task Delete(Genre entity)
         {
-            gameStoreDbContext.Genres.Remove(entity);
+            await Task.Run(() => gameStoreDbContext.Genres.Remove(entity));
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -54,9 +54,9 @@ namespace Data_Layer.Repositories
             return await gameStoreDbContext.Genres.Include(g => g.Games).FirstAsync(g => g.Id == id);
         }
 
-        public void Update(Genre entity)
+        public async Task Update(Genre entity)
         {
-            gameStoreDbContext.Genres.Update(entity);
+            await Task.Run(() => gameStoreDbContext.Genres.Update(entity));
         }
     }
 }

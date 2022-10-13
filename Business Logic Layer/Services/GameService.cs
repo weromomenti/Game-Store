@@ -167,5 +167,12 @@ namespace Business_Logic_Layer.Services
             await unitOfWork.SaveChangesAsync();
             return pegiModel;
         }
+
+        public async Task AddSubgenreAsync(int genreId, GenreModel subGenre)
+        {
+            var genre = await unitOfWork.GenreRepository.GetByIdWithDetailsAsync(genreId);
+            genre.SubGenres.Add(mapper.Map<Genre>(subGenre));
+            await unitOfWork.SaveChangesAsync();
+        }
     }
 }

@@ -39,6 +39,9 @@ namespace Business_Logic_Layer.Services
             await unitOfWork.SaveChangesAsync();
             return orderDetails;
         }
+        // In this scenario, we expect the front-end to to the checking 
+        // if the order is created for the user, so we have a guarantee
+        // that the order should exist when we recieve its id
         public async Task<OrderModel> AddGameAsync(int orderId, int gameId)
         {
             var game = await unitOfWork.GameRepository.GetByIdWithDetailsAsync(gameId);
@@ -48,7 +51,7 @@ namespace Business_Logic_Layer.Services
                 throw new GameStoreException();
             }
             var order = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(orderId);
-            if (order.IsCheckecOut == true)
+            if (order.IsCheckedOut == true)
             {
                 throw new GameStoreException();
             }
@@ -81,7 +84,7 @@ namespace Business_Logic_Layer.Services
                 throw new GameStoreException();
             }
             var order = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(orderId);
-            if (order.IsCheckecOut == true)
+            if (order.IsCheckedOut == true)
             {
                 throw new GameStoreException();
             }
@@ -146,11 +149,13 @@ namespace Business_Logic_Layer.Services
             return model;
         }
 
-        public async Task CheckoutAsync(int id)
+        public async Task<OrderModel> CheckoutAsync(int id)
         {
             var order = await unitOfWork.OrderRepository.GetByIdWithDetailsAsync(id);
-            order.IsCheckecOut = true;
+            order.IsCheckedOut = true;
+            await unitOfWork.OrderRepository.Update(order);
             await unitOfWork.SaveChangesAsync();
+            return mapper.Map<OrderModel>(order);
         }
         public async Task<decimal> ToPayAsync(int id)
         {
