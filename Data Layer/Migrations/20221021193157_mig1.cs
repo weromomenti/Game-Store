@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data_Layer.Migrations
 {
-    public partial class initialMig : Migration
+    public partial class mig1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,6 +29,7 @@ namespace Data_Layer.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -221,7 +222,7 @@ namespace Data_Layer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PEGIRatingId = table.Column<int>(type: "int", nullable: false),
+                    PEGIRatingId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -234,8 +235,7 @@ namespace Data_Layer.Migrations
                         name: "FK_Games_PEGIRatings_PEGIRatingId",
                         column: x => x.PEGIRatingId,
                         principalTable: "PEGIRatings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -246,17 +246,18 @@ namespace Data_Layer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdentityId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserIdentityId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_AspNetUsers_IdentityId",
-                        column: x => x.IdentityId,
+                        name: "FK_Users_AspNetUsers_UserIdentityId",
+                        column: x => x.UserIdentityId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Users_Persons_PersonId",
                         column: x => x.PersonId,
@@ -419,12 +420,12 @@ namespace Data_Layer.Migrations
             migrationBuilder.InsertData(
                 table: "Games",
                 columns: new[] { "Id", "Description", "ImageUrl", "Name", "PEGIRatingId", "Price" },
-                values: new object[] { 1, "Description", "https://picfiles.alphacoders.com/198/thumb-198636.jpg", "The Witcher 3: Wild Hunt", 1, 30m });
+                values: new object[] { 1, "This is game about witcher hunting wild", "https://picfiles.alphacoders.com/198/thumb-198636.jpg", "The Witcher 3: Wild Hunt", 1, 30m });
 
             migrationBuilder.InsertData(
                 table: "Games",
                 columns: new[] { "Id", "Description", "ImageUrl", "Name", "PEGIRatingId", "Price" },
-                values: new object[] { 2, "Description", "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg", "Battlefield V", 2, 40m });
+                values: new object[] { 2, "This is game about battles in the field", "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg", "Battlefield V", 2, 40m });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -511,11 +512,6 @@ namespace Data_Layer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_IdentityId",
-                table: "Users",
-                column: "IdentityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_PersonId",
                 table: "Users",
                 column: "PersonId");
@@ -524,6 +520,12 @@ namespace Data_Layer.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserIdentityId",
+                table: "Users",
+                column: "UserIdentityId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

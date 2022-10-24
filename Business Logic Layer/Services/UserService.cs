@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Business_Logic_Layer.Infrastructure;
 using Business_Logic_Layer.Infrastructure.Validators;
 using Business_Logic_Layer.Interfaces;
 using Business_Logic_Layer.Models;
 using Data_Layer.Entities;
 using Data_Layer.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
@@ -20,12 +22,14 @@ namespace Business_Logic_Layer.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly UserValidator userValidator;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.userValidator = new UserValidator();
+            this.userManager = userManager;
         }
         public async Task AddAsync(UserModel model)
         {
@@ -36,7 +40,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task DeleteAsync(int modelId)
         {
-            await unitOfWork.UserRepository.DeleteByIdAsync(modelId);
+            var user = await unitOfWork.UserRepository.GetByIdWithDetailsAsync(modelId);
+            await userManager.DeleteAsync(user.IdentityUser);
             await unitOfWork.SaveChangesAsync();
         }
 
@@ -63,6 +68,25 @@ namespace Business_Logic_Layer.Services
             await Task.Run(() => unitOfWork.UserRepository.Update(mapper.Map<User>(model)));
             await unitOfWork.SaveChangesAsync();
             return model;
+        }
+        public async Task AddUserToRoleAsync(int userId, int roleId)
+        {
+            var user = await unitOfWork.UserRepository.GetByIdWithDetailsAsync(userId);
+            var role = await unitOfWork.RoleRepository.GetByIdAsync(roleId);
+            
+            if (user == null || role == null)
+            {
+                throw new GameStoreException();
+            }
+            if (user.RoleId == roleId)
+            {
+                return;
+            }
+            await userManager.RemoveFromRoleAsync(user.IdentityUser, user.Role.RoleName);
+            await userManager.AddToRoleAsync(user.IdentityUser, role.RoleName);
+            user.Role = role;
+            await unitOfWork.UserRepository.Update(user);
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

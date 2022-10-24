@@ -11,5 +11,6 @@ namespace Business_Logic_Layer.Interfaces
     public interface IUserService : ICrud<UserModel>
     {
         Task<User> GetByUserNameAsync(string userName);
+        Task AddUserToRoleAsync(int userId, int roleId);
     }
 }

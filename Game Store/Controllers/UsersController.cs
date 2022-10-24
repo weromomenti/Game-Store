@@ -54,8 +54,17 @@ namespace Game_Store.Controllers
             return Ok(response);
         }
         [Authorize(Policy = "ElevatedRights")]
+        [HttpPost("addUserToRole/{userId}/{roleId}")]
+        public async Task<IActionResult> AddUserToRoleAsync(int userId, int roleId)
+        {
+            await userService.AddUserToRoleAsync(userId, roleId);
+
+            return Ok();
+        }
+
+        [Authorize(Policy = "ElevatedRights")]
         [HttpPut]
-        public async Task<ActionResult> UpdateUserAsync(int id, [FromBody] UserModel userModel)
+        public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] UserModel userModel)
         {
             await userService.UpdateAsync(userModel);
             return new OkResult();
@@ -65,7 +74,7 @@ namespace Game_Store.Controllers
         public async Task<ActionResult> DeleteUser(int id)
         {
             await userService.DeleteAsync(id);
-            return new OkResult();
+            return Ok();
         }
     }
 }

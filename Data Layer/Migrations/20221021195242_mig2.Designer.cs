@@ -4,6 +4,7 @@ using Data_Layer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Layer.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    partial class GameStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221021195242_mig2")]
+    partial class mig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,7 +243,7 @@ namespace Data_Layer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("RatingName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -253,27 +255,27 @@ namespace Data_Layer.Migrations
                         new
                         {
                             Id = 1,
-                            RatingName = "PEGI3"
+                            Name = "PEGI3"
                         },
                         new
                         {
                             Id = 2,
-                            RatingName = "PEGI7"
+                            Name = "PEGI7"
                         },
                         new
                         {
                             Id = 3,
-                            RatingName = "PEGI12"
+                            Name = "PEGI12"
                         },
                         new
                         {
                             Id = 4,
-                            RatingName = "PEGI16"
+                            Name = "PEGI16"
                         },
                         new
                         {
                             Id = 5,
-                            RatingName = "PEGI18"
+                            Name = "PEGI18"
                         });
                 });
 

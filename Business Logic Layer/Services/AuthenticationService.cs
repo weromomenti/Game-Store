@@ -19,11 +19,11 @@ namespace Business_Logic_Layer.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly UserManager<UserIdentity> userManager;
+        private readonly UserManager<IdentityUser> userManager;
         private readonly IConfiguration configuration;
         private readonly IUnitOfWork unitOfWork;
 
-        public AuthenticationService(UserManager<UserIdentity> userManager, IConfiguration configuration, IMapper mapper, IUnitOfWork unitOfWork)
+        public AuthenticationService(UserManager<IdentityUser> userManager, IConfiguration configuration, IMapper mapper, IUnitOfWork unitOfWork)
         {
             this.userManager = userManager;
             this.configuration = configuration;
@@ -41,11 +41,16 @@ namespace Business_Logic_Layer.Services
             {
                 throw new ArgumentException($"Unable to authenticate user {request.Username}");
             }
+            var userInfo = await unitOfWork.UserRepository.GetByUserNameAsync(request.Username);
 
             var authClaims = new List<Claim>
             {
                 new (ClaimTypes.Name, user.UserName),
                 new (ClaimTypes.Email, user.Email),
+                //new Claim("firstName", userInfo?.Person?.FirstName),
+                //new Claim("lastName", userInfo?.Person?.LastName),
+                //new Claim("avatar", userInfo?.Avatar),
+                //new Claim("birth", userInfo?.Person?.BirthDate.ToString()),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
             var userRoles = await userManager.GetRolesAsync(user);
@@ -60,6 +65,7 @@ namespace Business_Logic_Layer.Services
         {
             var userByEmail = await userManager.FindByEmailAsync(request.Email);
             var userByUsername = await userManager.FindByNameAsync(request.Username);
+
             if (userByEmail is not null || userByUsername is not null)
             {
                 throw new ArgumentException($"User with email {request.Email} or username {request.Username} already exists.");
@@ -68,7 +74,7 @@ namespace Business_Logic_Layer.Services
             {
                 Person = new Person { FirstName = request.FirstName, LastName = request.LastName },
                 Role = unitOfWork.RoleRepository.GetAllAsync().Result.FirstOrDefault(r => r.RoleName == "User"),
-                Identity = new UserIdentity
+                IdentityUser = new IdentityUser
                 {
                     Email = request.Email, 
                     UserName = request.Username, 
@@ -76,8 +82,8 @@ namespace Business_Logic_Layer.Services
                 }
             };
             await unitOfWork.UserRepository.AddAsync(user);
-            var result = await userManager.CreateAsync(user.Identity, request.Password);
-            await userManager.AddToRoleAsync(user.Identity, "User");
+            var result = await userManager.CreateAsync(user.IdentityUser, request.Password);
+            await userManager.AddToRoleAsync(user.IdentityUser, "User");
             await unitOfWork.SaveChangesAsync();
 
 

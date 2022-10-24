@@ -22,7 +22,7 @@ namespace Game_Store.Controllers
             var orders = await orderService.GetAllAsync();
             return new OkObjectResult(orders);
         }
-        [Authorize(Policy = "StandardRights")]
+        [Authorize(Roles = "User")]
         [HttpGet("sum/{id}")]
         public async Task<ActionResult> GetSumAsync(int id)
         {
@@ -71,14 +71,14 @@ namespace Game_Store.Controllers
             await orderService.AddOrderDetailsAsync(orderDetails);
             return new OkObjectResult(orderDetails);
         }
-        [Authorize(Policy = "StandardRights")]
+        [Authorize(Roles = "User")]
         [HttpPut("addGame/{orderId}/{gameId}")]
         public async Task<ActionResult> AddGameAsync(int orderId, int gameId)
         {
             var order = await orderService.AddGameAsync(orderId, gameId);
             return new OkObjectResult(order);
         }
-        [Authorize(Policy = "StandardRights")]
+        [Authorize(Roles = "User")]
         [HttpPut("removeGame/{id}/{gameId}")]
         public async Task<ActionResult> RemoveGameAsync(int id, int gameId)
         {
@@ -99,7 +99,7 @@ namespace Game_Store.Controllers
             await orderService.DeleteOrderDetailsAsync(id);
             return new OkResult();
         }
-        [Authorize(Policy = "StandardRights")]
+        [Authorize(Policy = "User")]
         [HttpPut("checkout/{orderId}")]
         public async Task<ActionResult<OrderModel>> CheckoutAsync(int orderId)
         {

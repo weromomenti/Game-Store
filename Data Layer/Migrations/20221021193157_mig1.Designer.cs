@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Layer.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20221013065024_initialMig")]
-    partial class initialMig
+    [Migration("20221021193157_mig1")]
+    partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,7 +85,7 @@ namespace Data_Layer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PEGIRatingId")
+                    b.Property<int?>("PEGIRatingId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -101,7 +101,7 @@ namespace Data_Layer.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Description",
+                            Description = "This is game about witcher hunting wild",
                             ImageUrl = "https://picfiles.alphacoders.com/198/thumb-198636.jpg",
                             Name = "The Witcher 3: Wild Hunt",
                             PEGIRatingId = 1,
@@ -110,7 +110,7 @@ namespace Data_Layer.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "Description",
+                            Description = "This is game about battles in the field",
                             ImageUrl = "https://m.media-amazon.com/images/I/515XvAG+q6L._AC_SY780_.jpg",
                             Name = "Battlefield V",
                             PEGIRatingId = 2,
@@ -343,22 +343,24 @@ namespace Data_Layer.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdentityId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserIdentityId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("IdentityId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PersonId");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("UserIdentityId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -586,6 +588,9 @@ namespace Data_Layer.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasDiscriminator().HasValue("UserIdentity");
                 });
 
@@ -616,9 +621,7 @@ namespace Data_Layer.Migrations
                 {
                     b.HasOne("Data_Layer.Entities.PEGIRating", "PEGIRating")
                         .WithMany()
-                        .HasForeignKey("PEGIRatingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PEGIRatingId");
 
                     b.Navigation("PEGIRating");
                 });
@@ -662,10 +665,6 @@ namespace Data_Layer.Migrations
 
             modelBuilder.Entity("Data_Layer.Entities.User", b =>
                 {
-                    b.HasOne("Data_Layer.Entities.UserIdentity", "Identity")
-                        .WithMany()
-                        .HasForeignKey("IdentityId");
-
                     b.HasOne("Data_Layer.Entities.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
@@ -678,11 +677,17 @@ namespace Data_Layer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Identity");
+                    b.HasOne("Data_Layer.Entities.UserIdentity", "UserIdentity")
+                        .WithOne("User")
+                        .HasForeignKey("Data_Layer.Entities.User", "UserIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
 
                     b.Navigation("Role");
+
+                    b.Navigation("UserIdentity");
                 });
 
             modelBuilder.Entity("GameGenre", b =>
@@ -776,6 +781,12 @@ namespace Data_Layer.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Data_Layer.Entities.UserIdentity", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

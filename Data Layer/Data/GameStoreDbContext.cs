@@ -17,13 +17,11 @@ namespace Data_Layer.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<PEGIRating> PEGIRatings { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserIdentity> UserIdentities { get; set; }
+        public new DbSet<User> Users { get; set; }
         public DbSet<Person> Persons { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public new DbSet<Role> Roles { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
-
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
         }

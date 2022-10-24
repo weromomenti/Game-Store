@@ -13,11 +13,11 @@ namespace Data_Layer.Entities.Configurations
         public void Configure(EntityTypeBuilder<PEGIRating> builder)
         {
             builder.HasData(
-                new PEGIRating { Id = 1, Name = "PEGI3" },
-                new PEGIRating { Id = 2, Name = "PEGI7" },
-                new PEGIRating { Id = 3, Name = "PEGI12" },
-                new PEGIRating { Id = 4, Name = "PEGI16" },
-                new PEGIRating { Id = 5, Name = "PEGI18" });
+                new PEGIRating { Id = 1, RatingName = "PEGI3" },
+                new PEGIRating { Id = 2, RatingName = "PEGI7" },
+                new PEGIRating { Id = 3, RatingName = "PEGI12" },
+                new PEGIRating { Id = 4, RatingName = "PEGI16" },
+                new PEGIRating { Id = 5, RatingName = "PEGI18" });
         }
     }
 }
