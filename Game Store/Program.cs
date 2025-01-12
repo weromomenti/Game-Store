@@ -142,6 +142,8 @@ DataSeeder.Seed(services);
 
 app.UseCors("GameStore");
 
+app.MapHealthChecks("/health");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
