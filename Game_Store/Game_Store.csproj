@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Business Logic Layer\Business Logic.csproj" />
-    <ProjectReference Include="..\Data Layer\Data.csproj" />
+    <ProjectReference Include="..\Data_Layer\Data_Layer.csproj" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -114,6 +114,8 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin", "User"));
 });
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
